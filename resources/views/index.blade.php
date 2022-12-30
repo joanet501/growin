@@ -30,9 +30,8 @@
         />
       </div>
       <div class="text-center fs-1 fw-bold">Bienvenido!</div>
-      <form method="POST" action="{{ url('api/auth/login') }}">
+      <form method="POST" action="{{ route('login') }}">
         @csrf
-
       <div class="input-group mt-4">
         <div class="input-group-text bg-dark">
           <img

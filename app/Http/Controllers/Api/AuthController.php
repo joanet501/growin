@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ForgetPasswordRequest;
 use App\Http\Resources\UserResource;
 
@@ -64,13 +63,11 @@ class AuthController extends Controller
 
 
     public function loginWeb(Request $request){
-
         $user = AuthController::loginUser($request);
-
         if ($user == false){
             return view('index-error');
         }
-         $data = json_decode($user->toJson(), true);
+        $data = json_decode($user->toJson(), true);
         return view('jardin', $data);
     }
 
@@ -90,7 +87,6 @@ class AuthController extends Controller
                 return false;
             }
 
-            $user = User::where('email', $request->email)->first();
             return UserResource::make(Auth::user());
 
 

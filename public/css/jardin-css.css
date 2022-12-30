@@ -3,16 +3,17 @@
     min-width: 100%
 }
 
-body {
-    background-color: #3c3c3c;
-    background-image: url('https://images.rawpixel.com/image_1000/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcGQxOS1taW50eS0wMi1sZWFmXzEuanBn.jpg');
-    height: 100vh;
-}
 
 .flex {
     -webkit-box-flex: 1;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto
+}
+
+.modal-content{
+    background-color: #3c3c3c !important;
+    color:#fff;
+
 }
 
 @media (max-width:991.98px) {
@@ -41,11 +42,6 @@ body {
     margin-bottom: 30px;
 
 
-}
-
-#lat-bar {
-    margin-top: 0.75rem;
-    display: block;
 }
 
 .bd-example-row [class^="col"], .bd-example-cssgrid .grid>* {
@@ -117,12 +113,218 @@ text-decoration: none;
 color: inherit;
 }
 
-#sm-card{
-    margin-top: 0;
-    margin-bottom: 0;
+/* Layout */
+/* .s-layout {
+display: flex;
+width: 100%;
+min-height: 100vh;
+} */
+
+/* .s-layout__content {
+display: flex;
+justify-content: center;
+align-items: center;
+flex: 1;
+} */
+
+/* Sidebar */
+/* .s-sidebar__trigger {
+z-index: 2;
+position: fixed;
+top: 0;
+right: 0;
+width: 100%;
+height: 64px;
+background: #192b3c;
+} */
+
+/* .s-sidebar__trigger > i {
+display: inline-block;
+margin: 1.5em 0 0 1.5em;
+color: #f07ab0;
+} */
+
+/* .s-sidebar__nav {
+position: fixed;
+top: 0;
+right: -15em;
+overflow: hidden;
+transition: all .3s ease-in;
+width: 15em;
+height: 100%;
+background: #243e56;
+color: rgba(255, 255, 255, 0.7);
 }
 
-.modal-content {
-    background-color: #3c3c3c !important;
-    color: white;
+.s-sidebar__nav:hover,
+.s-sidebar__nav:focus,
+.s-sidebar__trigger:focus + .s-sidebar__nav,
+.s-sidebar__trigger:hover + .s-sidebar__nav {
+right: 0;
 }
+
+/*Posición navegador lateral*/
+/* .s-sidebar__nav ul {
+position: absolute;
+top: 4em;
+right: 0;
+margin: 0;
+padding: 0;
+width: 15em;
+}
+
+.s-sidebar__nav ul li {
+width: 100%;
+}
+
+.s-sidebar__nav-link {
+position: relative;
+display: inline-block;
+width: 100%;
+height: 4em;
+}
+
+.s-sidebar__nav-link em {
+position: absolute;
+top: 50%;
+right: 4em;
+transform: translateY(-50%);
+}
+
+.s-sidebar__nav-link:hover {
+background: #4d6276;
+}
+
+.s-sidebar__nav-link > i {
+position: absolute;
+top: 0;
+right: 0;
+display: inline-block;
+width: 4em;
+height: 4em;
+}
+
+.s-sidebar__nav-link > i::before {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+
+.s-layout__content {
+margin-right: 4em;
+}
+
+/* Sidebar */
+/* .s-sidebar__trigger {
+width: 4em;
+}
+
+.s-sidebar__nav {
+
+right: 0;
+}
+
+.s-sidebar__nav:hover,
+.s-sidebar__nav:focus,
+.s-sidebar__trigger:hover + .s-sidebar__nav,
+.s-sidebar__trigger:focus + .s-sidebar__nav {
+width: 15em;
+} */
+
+/* .filler {
+position: absolute;
+top: 0;
+left: 0;
+background-color: #192b3c;
+height: 64px;
+width: 100%;
+} */
+
+.emptyDescription{
+background-color: #343a40!important;
+color:#fff;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+.textoGrande {
+    font-size: 2vw;
+
+}
+
+.textoMuyGrande {
+    font-size: 2vw;
+
+}
+
+
+a:link, a:visited, a:hover, a:active {
+    color: white!important;
+  }
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+  }
+
+  /* Style the popup content */
+.popup-content {
+    z-index: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    width: 300px;
+  }
+
+  /* Style the close button */
+.close-button {
+    float: right;
+    cursor: pointer;
+  }
+
+  #lightbox, #lightboxPlanta {
+    position: fixed;
+    border-radius: 1rem;
+    top: 50%;
+    left: 50%;
+    background-color: #343a40!important;
+    color:white;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    z-index: 1;
+  }
+
+  .lightboxPlanta_close {
+    float:right;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    color: #333;
+    filter: alpha(opacity=20);
+    opacity: .2;
+  }
+
+  #lightboxRenombre {
+    position: fixed;
+    border-radius: 1rem;
+    top: 50%;
+    left: 50%;
+    background-color: #343a40!important;
+    color:white;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    z-index: 2;
+  }

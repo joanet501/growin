@@ -30,9 +30,8 @@
         />
       </div>
       <div class="text-center fs-1 fw-bold">Bienvenido!</div>
-      <form method="POST" action="<?php echo e(url('api/auth/login')); ?>">
+      <form method="POST" action="<?php echo e(route('login')); ?>">
         <?php echo csrf_field(); ?>
-
       <div class="input-group mt-4">
         <div class="input-group-text bg-dark">
           <img

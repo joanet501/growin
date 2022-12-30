@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\PlantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,17 +21,19 @@ use App\Http\Controllers\Api\AuthController;
 Route::get('/register-web', function () {
     return view('registro');
 });
-
-
-
-Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginWeb']);
+
+Route::group(['middleware' => ['web']], function () {
+    Route::post('/plant/delete', [PlantController::class, 'delete']);
+    Route::post('/plant/create', [PlantController::class, 'create']);
+    Route::post('/auth/register', [AuthController::class, 'createUser']);
+});
+
 
     Route::get('/', function () {
         return view('index');
     });
 
 
-Auth::routes();
 
 

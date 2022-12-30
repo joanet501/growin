@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Providers;
+use Laravel\Fortify\Fortify;
 
 use Illuminate\Support\ServiceProvider;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
+        Fortify::loginView(function () {
+            return view('index');
+        });
     }
 }

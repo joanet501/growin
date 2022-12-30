@@ -6,9 +6,14 @@ use App\Http\Requests\CreatePlantRequest;
 use App\Http\Requests\DestroyPlantRequest;
 use App\Http\Requests\StorePlantRequest;
 use App\Http\Requests\UpdatePlantRequest;
+use App\Http\Resources\PlantResource;
+use App\Http\Resources\UserResource;
 use App\Models\Plant;
+use App\Models\User;
+
 use App\Models\Garden;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PlantController extends Controller
 {
@@ -27,26 +32,20 @@ class PlantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(CreatePlantRequest $request)
+    public function create(Request $request)
     {
-        //check if garden is full
-        $count = Plant::where('garden_id', $request->garden_id)->count();
-        if ($count>9)
-            return response()->json([
-                'status' => false,
-                'message' => 'This garden is full'
-             ]);
-        //check if garden belongs to authenticated user
-        $garden = Garden::find($request->garden_id);
-        if ($garden->user_id != Auth::user()->id)
-            return response()->json([
-                'status' => false,
-                'message' => "This garden does not belong to authenticated user"
-            ]);
-        //create
-        $plant = Plant::create($request->all());
-        return $plant;
-    }
+        $gardenId = $request->gardenId;
+        $gardens = Auth::user()->gardens;
+        $data = array(
+            "category_id" =>  $request->plantType,
+            "name" => null,
+            "garden_id" => $gardens[$gardenId]->id,
+        );
+        Plant::create($data);
+        $user = Auth::user();
+        $user = UserResource::make($user);
+        $data = json_decode($user->toJson(), true);
+        return redirect()->back()->with($data);    }
 
     /**
      * Store a newly created resource in storage.
@@ -99,21 +98,27 @@ class PlantController extends Controller
      * @param  \App\Models\Plant  $plant
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DestroyPlantRequest $request)
-    {
-        $plant = Plant::find($request->plant_id);
-        $plant->delete();
-        if($plant){
-            return response()->json([
-                'status' => true,
-                'message' => "Plant deleted successfully"
-            ]);
-        }else{
-            return response()->json([
-                'status' => false,
-                'message' => "Plant could not be deleted(this plant doesn't belong to authenticated user's gardens?)"
-            ]);
-        }
+
+    public function delete(Request $request){
+        $garden = Auth::user()->gardens;
+        $gardenId = $request->gardenId;
+        $plantId = $request->plantId;
+        $garden = $garden[$gardenId];
+        $plants = $garden->plants;
+        $plants[$plantId]->delete();
+        $user = Auth::user();
+        $user = UserResource::make($user);
+        $data = json_decode($user->toJson(), true);
+        return redirect()->back()->with($data);    }
+
+    public function redirectGarden(){
+
+    }
+
+    public function water(Request $request){
+        $plant = Plant::find($request->id);
+        $plant->update['water_date'] = Carbon::now()->format('Y-m-d');
+        return PlantResource::make($plant);
     }
 
 

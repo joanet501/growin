@@ -20,7 +20,72 @@
   <title>GrowIn'</title>
 </head>
 
-<body class="p-3 m-0 border-0 bd-example bd-example-row" style="background-color:black">
+
+
+
+<body class="p-3 m-0 border-0 bd-example bd-example-row"  style="background-image: url('<?php echo e(asset("assets/bg.jpg")); ?>');">
+    <!-- Lightbox con planta -->
+<div id="lightboxPlanta" style="display:none">
+    <div class="container-fluid">
+      <button id="lightbox_close" onclick="closeLightboxPlanta()">&times;</button>
+      <div class="row">
+        <div class="col-md-6">
+         <p id="name"> Nombre planta </p>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <img id="lightbox-image" src="" class="d-flex flex-column container-fluid"/>
+
+        </div>
+
+      </div>
+
+        <div class="col-md-6 text-center" id="desc">
+          <p>
+            Descripción de la planta
+          </p>
+        </div>
+        <div class="col-md-6 text-center" id="riego">
+          <p id="ultimoRiego">
+            Último riego: 00-00-0000<br>
+         </p>
+         <p id="proximoRiego">
+            Próximo riego: 00-00-0000<br>
+          </p>
+        </div>
+
+
+        <div class="col-md-4">
+            <form method="POST" action="<?php echo e(url('/plant/delete')); ?>">
+                <?php echo method_field("POST"); ?>
+                <?php echo csrf_field(); ?>
+                     <input type="hidden" name="gardenId" id="gardenId">
+                     <input type="hidden" name="plantId" id="plantId">
+
+                <button class="btn btn-success container-fluid" type="submit" onclick="pictureDelete()">
+                    Borrar
+                  </button>
+            </form>
+
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-warning container-fluid" type="button" onclick="regar()">
+            Regar
+          </button>
+        </div>
+        <div class="col-md-4">
+         <button class="btn btn-warning container-fluid" type="button" onclick="openLightboxRenombre()">
+           Renombrar
+         </button>
+       </div>
+
+    </div>
+
+
+
+    </div>
+  </div>
+
   <div class="container">
     <div class = "row d-flex d-sm-none">
       <div class = "col-12">
@@ -86,15 +151,17 @@
                 <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if($key == 0): ?>
                     <?php for( $i=0 ; $i < 9; $i++ ): ?>
-                        <div class="col-4 col-sm-4"><a data-toggle="modal" data-target="#ventanaModal"><img
-                            class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i]['category']['image_url'] ?? 'assets/Huerto.png')); ?>" alt="Card image cap" draggable="false" id="celda1" onclick="getImageId(event)">
-                        </a></div>
+                        <div class="col-4 col-sm-4"><a onclick="chooser()">
+                            <img class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i]['category']['image_url'] ?? 'assets/Huerto.png')); ?>" alt="<?php echo e($key); ?>" draggable="false" id="<?php echo e($i); ?>" onclick="getImageId(event)">
+                            </a>
+                        </div>
                     <?php endfor; ?>
                 <?php else: ?>
                     <?php for( $i=0 ; $i<9 ; $i++ ): ?>
-                        <div class="col-4 col-sm-4 d-none"><a data-toggle="modal" data-target="#ventanaModal"><img
-                            class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i]['category']['image_url'] ?? 'assets/Huerto.png')); ?>" alt="Card image cap" draggable="false" id="celda1" onclick="getImageId(event)">
-                        </a></div>
+                        <div class="col-4 col-sm-4 d-none"><a onclick="chooser()"><img
+                            class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i]['category']['image_url'] ?? 'assets/Huerto.png')); ?>"  alt="<?php echo e($key); ?>" draggable="false" id="<?php echo e($i); ?>" onclick="getImageId(event)">
+                        </a>
+                        </div>
                     <?php endfor; ?>
                 <?php endif; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -126,6 +193,10 @@
                   <a>
                     Próximo regado: 15-10-1010
                   </a>
+
+                  <a id="prueba">
+                    Prueba
+                  </a>
                 </li>
               </ul>
               <hr/>
@@ -138,166 +209,399 @@
   </div>
 
 
+  <div class="modal fade" id="Cambio" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
+   aria-hidden="true">
+    <!-- Create the popup content -->
+    <div class="popup-content">
+      <!-- Create a textfield for the user to enter content -->
+      <input type="text" id="textfield">
+      <br><br>
 
+      <!-- Create a save button -->
+      <button onclick="saveContent()">Guardar</button>
 
-  <!-- Ventana modal -->
-  <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-6">
-              <!-- <div class="dropdown">
+      <!-- Create a close button -->
+      <button class="close-button" onclick="closePopup()">Cerrar</button>
+    </div>
+  </div>
+<!-- Lighbox huerto vacio -->
+<div id="lightbox" style="display:none">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <!-- <div class="dropdown">
 
-                <button class="btn btn-primary dropdown-toggle container-fluid " type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                  Plantas
-                </button>
-                <div class="dropdown-menu container-fluid" aria-labelledby="dropdownMenuButton">
-                   <a class="dropdown-item disabled" href="#">Tomate</a> <a class="dropdown-item" href="#">Patata</a> <a class="dropdown-item" href="#">Cebolla</a>
-                </div>
-              </div> -->
-              <select id="selector" class="container-fluid">
-                <option value="0">Selecciona una planta</option>
-                <option value="1">Tomate</option>
-                <option value="2">Patata</option>
-                <option value="3">Cebolla</option>
-            </select>
-
+            <button class="btn btn-primary dropdown-toggle container-fluid " type="button" id="dropdownMenuButton" data-toggle="dropdown">
+              Plantas
+            </button>
+            <div class="dropdown-menu container-fluid" aria-labelledby="dropdownMenuButton">
+               <a class="dropdown-item disabled" href="#">Tomate</a> <a class="dropdown-item" href="#">Patata</a> <a class="dropdown-item" href="#">Cebolla</a>
             </div>
-            <div class="col-md-6">
-              <div>
-                <img id="prod-image" src="<?php echo e(asset('assets/Brote.jpg')); ?>" class="d-flex flex-column container-fluid"/>
-            </div>
-
-          </div>
-
-            <div class="col-md-6 text-center" id="desc">
-              <p>
-                Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.
-              </p>
-            </div>
-            <div class="col-md-6 text-center" id="riego">
-              <p>
-
-              </p>
-            </div>
-
-
-            <div class="col-md-6">
-              <button class="btn btn-success container-fluid" type="button" data-dismiss="modal" onclick="pictureChange()">
-                Aceptar
-              </button>
-            </div>
-            <div class="col-md-6">
-              <button class="btn btn-warning container-fluid" type="button" data-dismiss="modal">
-                Cerrar
-              </button>
-            </div>
+          </div> -->
+          <select id="selector" class="container-fluid">
+            <option value="0">Selecciona una planta</option>
+            <option value="1">Tomate</option>
+            <option value="2">Patata</option>
+            <option value="3">Cebolla</option>
+        </select>
 
         </div>
-
-
-
+        <div class="col-md-6">
+          <div>
+            <img id="prod-image" src="assets/Brote.jpg" class="d-flex flex-column container-fluid"/>
         </div>
       </div>
+
+        <div class="col-md-6 text-center" id="desc">
+          <p>
+            Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.
+          </p>
+        </div>
+        <div class="col-md-6 text-center" id="riego">
+          <p>
+
+          </p>
+        </div>
+
+
+        <div class="col-md-6">
+            <form method="POST" action="<?php echo e(url('/plant/create')); ?>">
+                <?php echo method_field("POST"); ?>
+                <?php echo csrf_field(); ?>
+                     <input type="hidden" name="gardenId" id="gardenId2">
+                     <input type="hidden" name="plantType" id="plantType">
+
+                     <button class="btn btn-success container-fluid" type="submit" onclick="pictureChange()">
+                        Añadir
+                      </button>
+            </form>
+
+
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-warning container-fluid" type="button" onclick="closeLightbox()">
+            Cerrar
+          </button>
+        </div>
+
+    </div>
+
+
+
     </div>
   </div>
 
-    <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-6">
-              <!-- <div class="dropdown">
 
-                <button class="btn btn-primary dropdown-toggle container-fluid " type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                  Plantas
-                </button>
-                <div class="dropdown-menu container-fluid" aria-labelledby="dropdownMenuButton">
-                   <a class="dropdown-item disabled" href="#">Tomate</a> <a class="dropdown-item" href="#">Patata</a> <a class="dropdown-item" href="#">Cebolla</a>
-                </div>
-              </div> -->
-              <select id="selector" class="container-fluid">
-                <option value="0">Selecciona una planta</option>
-                <option value="1">Tomate</option>
-                <option value="2">Patata</option>
-                <option value="3">Cebolla</option>
-            </select>
+<!-- Lightbox renombrar planta -->
 
-            </div>
-            <div class="col-md-6">
-              <div>
-                <img id="prod-image" src="<?php echo e(asset('assets/Brote.jpg')); ?>" class="d-flex flex-column container-fluid"/>
-            </div>
+<div id="lightboxRenombre" style="display:none">
 
+    <input type="text" id="textoRenombrar">
+    <!-- Create a button to store the value in the text field -->
+    <button id="botonRenombrar">Renombrar</button>
+    <!-- Create a button to close the lightbox -->
+    <button onclick="closeLightboxRenombre()">Cerrar</button>
+
+  </div>
+
+   <!-- Ventana alternativa -->
+
+   <div class="modal fade" id="ventanaAlt" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="container-fluid">
+         <div class="row">
+           <div class="col-md-6">
+            <p id="name"> Nombre planta </p>
+           </div>
+           <div class="col-md-6">
+             <div>
+               <img id="prod-image" src="<?php echo e(asset("assets/Brote.jpg")); ?>" class="d-flex flex-column container-fluid"/>
+           </div>
+
+         </div>
+
+           <div class="col-md-6 text-center" id="desc">
+             <p>
+               Descripción de la planta
+             </p>
+           </div>
+           <div class="col-md-6 text-center" id="riego">
+             <p id="ultimoRiego">
+               Último riego: 00-00-0000<br>
+            </p>
+            <p id="proximoRiego">
+               Próximo riego: 00-00-0000<br>
+             </p>
+           </div>
+
+
+           <div class="col-md-4">
+             <button class="btn btn-success container-fluid" type="button" onclick="pictureDelete()" data-dismiss="modal">
+               Borrar
+             </button>
+           </div>
+           <div class="col-md-4">
+             <button class="btn btn-warning container-fluid" type="button" onclick="regar()">
+               Regar
+             </button>
+           </div>
+           <div class="col-md-4">
+            <button class="btn btn-warning container-fluid" type="button">
+              Renombrar
+            </button>
           </div>
 
-            <div class="col-md-6 text-center" id="desc">
-              <p>
-                Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.
-              </p>
-            </div>
-            <div class="col-md-6 text-center" id="riego">
-              <p>
-
-              </p>
-            </div>
-
-
-            <div class="col-md-6">
-              <button class="btn btn-success container-fluid" type="button" data-dismiss="modal" onclick="pictureChange()">
-                Aceptar
-              </button>
-            </div>
-            <div class="col-md-6">
-              <button class="btn btn-warning container-fluid" type="button" data-dismiss="modal">
-                Cerrar
-              </button>
-            </div>
-
-        </div>
+       </div>
 
 
 
-        </div>
-      </div>
-    </div>
-  </div>
- <!-- ventana confirmacion -->
- <div class="modal fade" id="ventanaConfirmacion" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
- aria-hidden="true">
- <div class="modal-dialog" role="document">
-   <div class="modal-content">
-     <div class="container-fluid">
-       <div class="row">
-         <div class="col-md-12 text-center" id="desc">
-           <p>
-             ¿Estás seguro que quieres borrar el huerto?
-           </p>
-         </div>
-         <div class="col-md-6">
-           <button class="btn btn-danger container-fluid" type="button" data-dismiss="modal">
-             Si
-           </button>
-         </div>
-         <div class="col-md-6">
-           <button class="btn btn-success container-fluid" type="button" data-dismiss="modal">
-             No
-           </button>
-         </div>
-
-     </div>
-
-
-
+       </div>
      </div>
    </div>
- </div>
-</div>
+ </div> -->
 
+
+  <!-- Fin Lightbox con planta -->
+  <!-- Ventana confirmación -->
+
+  <div class="modal fade" id="ventanaConfirmacion" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" background-color="#3c3c3c" color="white">
+      <div class="modal-content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-md-12 text-center" id="desc">
+              <p>
+                Estás seguro de que deseas borrar este huerto?
+              </p>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-danger container-fluid" type="button" data-dismiss="modal">
+                Aceptar
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-success container-fluid" type="button" data-dismiss="modal">
+                Cancelar
+              </button>
+            </div>
+
+        </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Script Lightbox -->
+
+<script>
+    function openLightbox() {
+      // Show the lightbox and add a dark background
+      document.getElementById("lightbox").style.display = "block";
+
+    }
+    function closeLightbox() {
+      // Hide the lightbox and remove the dark background
+      document.getElementById("lightbox").style.display = "none";
+
+    }
+  </script>
+
+  <!-- Fin Script Lightbox-->
+
+  <!-- Script Lightbox huerto vacio-->
+
+  <script>
+    function openLightboxPlanta() {
+      // Show the lightbox and add a dark background
+      document.getElementById("lightboxPlanta").style.display = "block";
+      updateLightboxImage();
+
+
+    }
+    function closeLightboxPlanta() {
+      // Hide the lightbox and remove the dark background
+      document.getElementById("lightboxPlanta").style.display = "none";
+
+    }
+  </script>
+
+  <!-- Fin Script Lightbox huerto vacio-->
+
+  <!-- Scripts Lightbox Renombrar Planta -->
+
+  <script>
+    function openLightboxRenombre() {
+
+      document.getElementById("lightboxRenombre").style.display = "block";
+
+    }
+    function closeLightboxRenombre() {
+
+      document.getElementById("lightboxRenombre").style.display = "none";
+
+    }
+  </script>
+
+  <script>
+  var textField = document.getElementById('textoRenombrar');
+
+  // Get the button in lightbox 2
+  var button = document.getElementById('botonRenombrar');
+
+  // Add an event listener to the button that will run when it is clicked
+  button.addEventListener("click", function() {
+    // Get the value of the text field
+    var text = textField.value;
+
+    var a = text.toString();
+    // Get the element in lightbox 1 that contains the text you want to update
+    document.getElementById('name').innerHTML = text;
+
+  });
+
+
+  </script>
+
+  <!-- Fin Scripts Lightbox Renombrar Planta-->
+
+  <!--  Script renombrar -->
+
+
+  <!-- Fin script renombrar -->
+
+
+    <script>
+  var data = {
+      "0" : { img: "<?php echo e(asset("assets/Brote.jpg")); ?>", text1:"Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.", text2:""},
+      "1" : { img: "<?php echo e(asset("assets/Tomate.jpg")); ?>", text1:"Esto es un tomate", text2:"Su riego es cada 3 semanas"},
+      "2" : { img: "<?php echo e(asset("assets/Patata.jpg")); ?>", text1:"Esto es una patata", text2:"Su riego es cada 2 semanas"},
+      "3" : { img: "<?php echo e(asset("assets/Cebolla.jpg")); ?>", text1:"Esto es una cebolla", text2:"Su riego es cada semana"},
+  };
+
+  $('#selector').change(function() {
+      var value = $(this).val();
+      if (data[value] != undefined)
+      {
+          $('#prod-image').attr('src', data[value].img);
+          $('#desc').text(data[value].text1);
+          $('#riego').text(data[value].text2);
+
+      }
+  });
+
+    </script>
+  <script>
+    function getImageId(event) {
+      var image = event.target;
+      var imageId = image.id;
+
+      window.imageId = imageId
+
+    }
+    </script>
+  <script>
+  function pictureChange()
+  {
+    var dropdown = document.getElementById("selector");
+    var selectedValue = dropdown.value;
+    var $gardenId = document.getElementById(window.imageId).alt;
+    document.getElementById('gardenId2').value = $gardenId;
+
+    if (selectedValue === "1") {
+        document.getElementById('plantType').value = 1;
+    } else if (selectedValue === "2") {
+        document.getElementById('plantType').value = 2;
+    } else if (selectedValue === "3") {
+        document.getElementById('plantType').value = 3;
+    }
+
+  }
+
+
+
+  </script>
+
+  <script>
+    function pictureDelete()
+    {
+        var $gardenId = document.getElementById(window.imageId).alt;
+        var $plantId = document.getElementById(window.imageId).id;
+        document.getElementById('gardenId').value = $gardenId;
+        document.getElementById('plantId').value = $plantId;
+    }
+  </script>
+
+  <!-- Script para actualizar riegos -->
+
+  <script>
+
+    function regar(){
+
+      var ultimo = document.getElementById('ultimoRiego');
+      var proximo = document.getElementById('proximoRiego');
+
+      var date = new Date();
+
+      var days = 20;
+
+      //newDate.setDate(currentDate.getDate() + days);
+
+      ultimo.innerHTML = "Último riego: "+ date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+
+      var newdate = new Date(date.getTime() + (days * 24 * 60 * 60 * 1000));
+
+      proximo.innerHTML = "Próximo riego: " + + newdate.getDate() + "-" + (newdate.getMonth() + 1) + "-" + newdate.getFullYear();
+
+    }
+
+  </script>
+<script>
+    function chooser() {
+      // Get the image element
+      var ruta = document.getElementById(window.imageId).src
+
+      // Check the src of the image
+      if (ruta.includes("tomate") || ruta.includes("patata") || ruta.includes("cebolla")) {
+        // If the src is "image1.jpg", open lightbox 1
+        openLightboxPlanta();
+      } else {
+        // If the src is "image2.jpg", open lightbox 2
+        openLightbox();
+      }
+    }
+  </script>
+  <!-- Fin Chooser funcional -->
+
+  <!-- Script Update Imagen -->
+
+  <script>
+  function updateLightboxImage() {
+
+    var foto = document.getElementById('lightbox-image');
+    var ruta = document.getElementById(window.imageId).src
+
+    if(ruta.includes("tomate")){
+
+    foto.src="<?php echo e(asset("assets/Tomate.jpg")); ?>"
+    }
+    else if (ruta.includes("patata")){
+    foto.src="<?php echo e(asset("assets/Patata.jpg")); ?>"
+    }
+    else if(ruta.includes("cebolla")){
+    foto.src="<?php echo e(asset("assets/Cebolla.jpg")); ?>"
+    }
+
+  }
+  </script>
+  <!-- Fin Script Update Imagen -->
 
   <script type="text/javascript" src="<?php echo e(asset("Scripts/jquery-2.1.1.min.js")); ?>"></script>
   <script type="text/javascript" src="<?php echo e(asset("Scripts/bootstrap.min.js")); ?>"></script>
@@ -306,69 +610,7 @@
   <script type="text/javascript" src="<?php echo e(asset("js/bootstrap.min.js")); ?>"></script>
   <script type="text/javascript" src="<?php echo e(asset("js/pictureChange.js")); ?>"></script>
 
-  <script>
-    var data = {
-        "0" : { img: "<?php echo e(asset('assets/Brote.jpg')); ?>", text1:"Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.", text2:""},
-        "1" : { img: "<?php echo e(asset('assets/Tomate.jpg')); ?>", text1:"Esto es un tomate", text2:"Su riego es cada 3 semanas"},
-        "2" : { img: "<?php echo e(asset('assets/Patata.jpg')); ?>", text1:"Esto es una patata", text2:"Su riego es cada 2 semanas"},
-        "3" : { img: "<?php echo e(asset('assets/Cebolla.jpg')); ?>", text1:"Esto es una cebolla", text2:"Su riego es cada semana"},
-    };
 
-    $('#selector').change(function() {
-        var value = $(this).val();
-        if (data[value] != undefined)
-        {
-            $('#prod-image').attr('src', data[value].img);
-            $('#desc').text(data[value].text1);
-            $('#riego').text(data[value].text2);
-
-        }
-    });
-
-      </script>
-    <script>
-      function getImageId(event) {
-        var image = event.target;
-        var imageId = image.id;
-
-        window.imageId = imageId
-        // You can now use the imageId variable to do something with the image's id
-      }
-      </script>
-    <script>
-        function pictureChange()
-        {
-            var dropdown = document.getElementById("selector");
-            var selectedValue = dropdown.value;
-
-            if (selectedValue === "1") {
-                document.getElementById(window.imageId).src = "<?php echo e(asset('assets/Tomate.jpg')); ?>";
-            } else if (selectedValue === "2") {
-            document.getElementById(window.imageId).src = "<?php echo e(asset('assets/Patata.jpg')); ?>";
-            } else if (selectedValue === "3") {
-            document.getElementById(window.imageId).src = "<?php echo e(asset('assets/Cebolla.jpg')); ?>";
-            }
-        }
-    </script>
-
-    <script>
-        function apiAddPlant($category){
-            $position = document.getElementById(window.imageId).id;
-            <form method="POST" action="<?php echo e(url('api/create/plant')); ?>">
-
-
-        }
-
-    </script>
-<script>
-    function getImageId(event) {
-      var image = event.target;
-      var imageId = image.id;
-
-      window.imageId = imageId
-      // You can now use the imageId variable to do something with the image's id
-    }
-    </script>
 </body>
 
 </html>

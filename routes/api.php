@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\GardenController;
 use App\Http\Controllers\PlantCategoryController;
 use App\Http\Controllers\PlantController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -29,6 +30,7 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/create/garden', [GardenC
 Route::middleware(['auth:sanctum', 'verified'])->post('/delete/garden', [GardenController::class, 'destroy']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/create/plant-category', [PlantCategoryController::class, 'createPlantCategory']);
 Route::middleware(['auth:sanctum', 'verified'])->post('/delete/plant-category', [PlantCategoryController::class, 'deletePlantCategory']);
-Route::middleware(['auth:sanctum','verified'])->post('/create/plant', [PlantController::class, 'create']);
-Route::middleware(['auth:sanctum','verified'])->post('/delete/plant', [PlantController::class, 'destroy']);
-
+Route::middleware(['auth:sanctum', 'verified'])->post('/plant/create', [PlantController::class, 'create']);
+Route::middleware(['auth:sanctum','verified'])->post('/plant/delete', [PlantController::class, 'delete']);
+Route::middleware(['auth:sanctum','verified'])->post('/plant/water', [PlantController::class, 'water']);
+Route::middleware(['auth:sanctum','verified'])->get('/home', [UserController::class, 'home']);

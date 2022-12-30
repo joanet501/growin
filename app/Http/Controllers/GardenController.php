@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateGardenRequest;
 use App\Models\Garden;
 use App\Models\Plant;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
+
 
 class GardenController extends Controller
 {
@@ -33,6 +35,7 @@ class GardenController extends Controller
     {
 
     }
+
 
     /**
      * Store a newly created resource in storage.

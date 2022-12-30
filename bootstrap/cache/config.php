@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:Fu0mnJc4uPhDNF6dsjQc3C9xevjrKfzpvydpWa/9zIk=',
+    'key' => 'base64:tvH6LN2Pi3IU2CRrMCo8BJX5V4HYzS/hOZq035SKB1k=',
     'cipher' => 'AES-256-CBC',
     'maintenance' => 
     array (
@@ -44,6 +44,7 @@
       23 => 'App\\Providers\\AuthServiceProvider',
       24 => 'App\\Providers\\EventServiceProvider',
       25 => 'App\\Providers\\RouteServiceProvider',
+      26 => 'App\\Providers\\FortifyServiceProvider',
     ),
     'aliases' => 
     array (
@@ -397,6 +398,52 @@
       '/home/joan/Documentos/GrowIn/public/storage' => '/home/joan/Documentos/GrowIn/storage/app/public',
     ),
   ),
+  'fortify-options' => 
+  array (
+    'two-factor-authentication' => 
+    array (
+      'confirm' => true,
+      'confirmPassword' => true,
+    ),
+  ),
+  'fortify' => 
+  array (
+    'guard' => 'web',
+    'middleware' => 
+    array (
+      0 => 'web',
+    ),
+    'auth_middleware' => 'auth',
+    'passwords' => 'users',
+    'username' => 'email',
+    'email' => 'email',
+    'views' => true,
+    'home' => '/api/home',
+    'prefix' => '',
+    'domain' => NULL,
+    'limiters' => 
+    array (
+      'login' => 'login',
+      'two-factor' => 'two-factor',
+    ),
+    'redirects' => 
+    array (
+      'login' => NULL,
+      'logout' => NULL,
+      'password-confirmation' => NULL,
+      'register' => NULL,
+      'email-verification' => NULL,
+      'password-reset' => NULL,
+    ),
+    'features' => 
+    array (
+      0 => 'registration',
+      1 => 'reset-passwords',
+      2 => 'update-profile-information',
+      3 => 'update-passwords',
+      4 => 'two-factor-authentication',
+    ),
+  ),
   'hashing' => 
   array (
     'driver' => 'bcrypt',
@@ -674,7 +721,7 @@
     ),
     'cookie' => 'laravel_session',
     'path' => '/',
-    'domain' => NULL,
+    'domain' => '',
     'secure' => NULL,
     'http_only' => true,
     'same_site' => 'lax',
