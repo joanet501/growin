@@ -26,6 +26,8 @@ Route::post('/auth/login', [AuthController::class, 'loginWeb']);
 Route::group(['middleware' => ['web']], function () {
     Route::post('/plant/delete', [PlantController::class, 'delete']);
     Route::post('/plant/create', [PlantController::class, 'create']);
+    Route::post('/plant/water', [PlantController::class, 'water']);
+
     Route::post('/auth/register', [AuthController::class, 'createUser']);
 });
 

@@ -24,67 +24,6 @@
 
 
 <body class="p-3 m-0 border-0 bd-example bd-example-row"  style="background-image: url('<?php echo e(asset("assets/bg.jpg")); ?>');">
-    <!-- Lightbox con planta -->
-<div id="lightboxPlanta" style="display:none">
-    <div class="container-fluid">
-      <button id="lightbox_close" onclick="closeLightboxPlanta()">&times;</button>
-      <div class="row">
-        <div class="col-md-6">
-         <p id="name"> Nombre planta </p>
-        </div>
-        <div class="col-md-6">
-          <div>
-            <img id="lightbox-image" src="" class="d-flex flex-column container-fluid"/>
-
-        </div>
-
-      </div>
-
-        <div class="col-md-6 text-center" id="desc">
-          <p>
-            Descripción de la planta
-          </p>
-        </div>
-        <div class="col-md-6 text-center" id="riego">
-          <p id="ultimoRiego">
-            Último riego: 00-00-0000<br>
-         </p>
-         <p id="proximoRiego">
-            Próximo riego: 00-00-0000<br>
-          </p>
-        </div>
-
-
-        <div class="col-md-4">
-            <form method="POST" action="<?php echo e(url('/plant/delete')); ?>">
-                <?php echo method_field("POST"); ?>
-                <?php echo csrf_field(); ?>
-                     <input type="hidden" name="gardenId" id="gardenId">
-                     <input type="hidden" name="plantId" id="plantId">
-
-                <button class="btn btn-success container-fluid" type="submit" onclick="pictureDelete()">
-                    Borrar
-                  </button>
-            </form>
-
-        </div>
-        <div class="col-md-4">
-          <button class="btn btn-warning container-fluid" type="button" onclick="regar()">
-            Regar
-          </button>
-        </div>
-        <div class="col-md-4">
-         <button class="btn btn-warning container-fluid" type="button" onclick="openLightboxRenombre()">
-           Renombrar
-         </button>
-       </div>
-
-    </div>
-
-
-
-    </div>
-  </div>
 
   <div class="container">
     <div class = "row d-flex d-sm-none">
@@ -208,6 +147,76 @@
   </div>
   </div>
 
+      <!-- Lightbox con planta -->
+<div id="lightboxPlanta" style="display:none">
+    <div class="container-fluid">
+      <button id="lightbox_close" onclick="closeLightboxPlanta()">&times;</button>
+      <div class="row">
+        <div class="col-md-6">
+         <p id="namePlant"> Nombre planta </p>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <img id="lightbox-image" src="" class="d-flex flex-column container-fluid"/>
+
+        </div>
+
+      </div>
+
+        <div class="col-md-6 text-center" id="desc">
+          <p id="descriptionPlant">
+            Descripción de la planta
+          </p>
+        </div>
+        <div class="col-md-6 text-center" id="riego">
+          <p id="ultimoRiego">
+            Último riego: 00-00-0000<br>
+         </p>
+         <p id="proximoRiego">
+            Próximo riego: 00-00-0000<br>
+          </p>
+        </div>
+
+
+        <div class="col-md-4">
+            <form method="POST" action="<?php echo e(url('/plant/delete')); ?>">
+                <?php echo method_field("POST"); ?>
+                <?php echo csrf_field(); ?>
+                     <input type="hidden" name="gardenId" id="gardenId">
+                     <input type="hidden" name="plantId" id="plantId">
+
+                <button class="btn btn-success container-fluid" type="submit" onclick="pictureDelete()">
+                    Borrar
+                  </button>
+            </form>
+
+        </div>
+        <div class="col-md-4">
+            <form method="POST" action="<?php echo e(url('/plant/water')); ?>">
+                <?php echo method_field("POST"); ?>
+                <?php echo csrf_field(); ?>
+                <input type="hidden" name="gardenId" id="gardenId3">
+                <input type="hidden" name="plantId" id="plantId3">
+
+          <button class="btn btn-warning container-fluid" type="submit" onclick="regar()">
+            Regar
+          </button>
+        </form>
+
+        </div>
+        <div class="col-md-4">
+         <button class="btn btn-warning container-fluid" type="button" onclick="openLightboxRenombre()">
+           Renombrar
+         </button>
+       </div>
+
+    </div>
+
+
+
+    </div>
+  </div>
+
 
   <div class="modal fade" id="Cambio" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
    aria-hidden="true">
@@ -304,66 +313,6 @@
 
   </div>
 
-   <!-- Ventana alternativa -->
-
-   <div class="modal fade" id="ventanaAlt" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
-   aria-hidden="true">
-   <div class="modal-dialog" role="document">
-     <div class="modal-content">
-       <div class="container-fluid">
-         <div class="row">
-           <div class="col-md-6">
-            <p id="name"> Nombre planta </p>
-           </div>
-           <div class="col-md-6">
-             <div>
-               <img id="prod-image" src="<?php echo e(asset("assets/Brote.jpg")); ?>" class="d-flex flex-column container-fluid"/>
-           </div>
-
-         </div>
-
-           <div class="col-md-6 text-center" id="desc">
-             <p>
-               Descripción de la planta
-             </p>
-           </div>
-           <div class="col-md-6 text-center" id="riego">
-             <p id="ultimoRiego">
-               Último riego: 00-00-0000<br>
-            </p>
-            <p id="proximoRiego">
-               Próximo riego: 00-00-0000<br>
-             </p>
-           </div>
-
-
-           <div class="col-md-4">
-             <button class="btn btn-success container-fluid" type="button" onclick="pictureDelete()" data-dismiss="modal">
-               Borrar
-             </button>
-           </div>
-           <div class="col-md-4">
-             <button class="btn btn-warning container-fluid" type="button" onclick="regar()">
-               Regar
-             </button>
-           </div>
-           <div class="col-md-4">
-            <button class="btn btn-warning container-fluid" type="button">
-              Renombrar
-            </button>
-          </div>
-
-       </div>
-
-
-
-       </div>
-     </div>
-   </div>
- </div> -->
-
-
-  <!-- Fin Lightbox con planta -->
   <!-- Ventana confirmación -->
 
   <div class="modal fade" id="ventanaConfirmacion" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
@@ -421,6 +370,7 @@
   <script>
     function openLightboxPlanta() {
       // Show the lightbox and add a dark background
+
       document.getElementById("lightboxPlanta").style.display = "block";
       updateLightboxImage();
 
@@ -537,32 +487,17 @@
         document.getElementById('gardenId').value = $gardenId;
         document.getElementById('plantId').value = $plantId;
     }
+    function regar()
+    {
+        var $gardenId = document.getElementById(window.imageId).alt;
+        var $plantId = document.getElementById(window.imageId).id;
+        document.getElementById('gardenId3').value = $gardenId;
+        document.getElementById('plantId3').value = $plantId;
+    }
   </script>
 
   <!-- Script para actualizar riegos -->
 
-  <script>
-
-    function regar(){
-
-      var ultimo = document.getElementById('ultimoRiego');
-      var proximo = document.getElementById('proximoRiego');
-
-      var date = new Date();
-
-      var days = 20;
-
-      //newDate.setDate(currentDate.getDate() + days);
-
-      ultimo.innerHTML = "Último riego: "+ date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-
-      var newdate = new Date(date.getTime() + (days * 24 * 60 * 60 * 1000));
-
-      proximo.innerHTML = "Próximo riego: " + + newdate.getDate() + "-" + (newdate.getMonth() + 1) + "-" + newdate.getFullYear();
-
-    }
-
-  </script>
 <script>
     function chooser() {
       // Get the image element
@@ -572,6 +507,9 @@
       if (ruta.includes("tomate") || ruta.includes("patata") || ruta.includes("cebolla")) {
         // If the src is "image1.jpg", open lightbox 1
         openLightboxPlanta();
+        document.getElementById("lightboxPlanta").style.display = "block";
+
+
       } else {
         // If the src is "image2.jpg", open lightbox 2
         openLightbox();
@@ -589,17 +527,39 @@
     var ruta = document.getElementById(window.imageId).src
 
     if(ruta.includes("tomate")){
-
-    foto.src="<?php echo e(asset("assets/Tomate.jpg")); ?>"
+    foto.src="<?php echo e(asset("assets/Tomate.jpg")); ?>";
+    updateLightboxDescriptionTomate();
     }
     else if (ruta.includes("patata")){
-    foto.src="<?php echo e(asset("assets/Patata.jpg")); ?>"
+    foto.src="<?php echo e(asset("assets/Patata.jpg")); ?>";
+    updateLightboxDescriptionPatata();
     }
     else if(ruta.includes("cebolla")){
-    foto.src="<?php echo e(asset("assets/Cebolla.jpg")); ?>"
+    foto.src="<?php echo e(asset("assets/Cebolla.jpg")); ?>";
+    updateLightboxDescriptionCebolla();
     }
 
   }
+    function updateLightboxWaterDate(){
+
+    }
+
+    function updateLightboxDescriptionTomate() {
+        document.getElementById('descriptionPlant').innerHTML = "El tomate es una fruta comestible de la familia de las solanáceas, de la que existen cientos de variedades de diferentes tamaños, formas y colores. Se consumen principalmente en la cocina como ingrediente en diversos platos, y también se pueden comer frescos como fruta."
+        document.getElementById('namePlant').innerHTML = "Tomate";
+    }
+    function updateLightboxDescriptionPatata() {
+        document.getElementById('descriptionPlant').innerHTML = "La cebolla es una hortaliza bulbosa de la familia de las liliáceas, que se cultiva principalmente por su bulbo que es comestible. La cebolla se utiliza a menudo en la cocina como ingrediente base en diversos platos y salsas. También se puede comer cruda o cocida y es rica en vitamina C y otros nutrientes."
+        document.getElementById('namePlant').innerHTML = "Patata";
+    }
+    function updateLightboxDescriptionCebolla() {
+        document.getElementById('descriptionPlant').innerHTML = "La patata es un tubérculo comestible perteneciente a la familia de las solanáceas. Hay muchas variedades de patatas, que se diferencian en tamaño, forma, color y sabor. Las patatas se consumen cocidas, fritas o al horno y son una fuente importante de energía y nutrientes, como el hierro, el potasio y el calcio."
+        document.getElementById('namePlant').innerHTML = "Cebolla";
+
+    }
+
+
+
   </script>
   <!-- Fin Script Update Imagen -->
 

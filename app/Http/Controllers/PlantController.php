@@ -45,7 +45,8 @@ class PlantController extends Controller
         $user = Auth::user();
         $user = UserResource::make($user);
         $data = json_decode($user->toJson(), true);
-        return redirect()->back()->with($data);    }
+        return redirect()->back()->with($data);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -109,16 +110,29 @@ class PlantController extends Controller
         $user = Auth::user();
         $user = UserResource::make($user);
         $data = json_decode($user->toJson(), true);
-        return redirect()->back()->with($data);    }
+        return redirect()->back()->with($data);
+
+    }
 
     public function redirectGarden(){
 
     }
 
+
+
     public function water(Request $request){
-        $plant = Plant::find($request->id);
-        $plant->update['water_date'] = Carbon::now()->format('Y-m-d');
-        return PlantResource::make($plant);
+        $garden = Auth::user()->gardens;
+        $garden = $garden[$request->gardenId];
+        $plants = $garden->plants;
+        $waterPlant = Plant::find($plants[$request->plantId]->id);
+        $waterPlant->update([
+            'water_date' => Carbon::now()->format('d-m-Y'),
+        ]);
+        //redirect to page
+        $user = Auth::user();
+        $user = UserResource::make($user);
+        $data = json_decode($user->toJson(), true);
+        return redirect()->back()->with($data);
     }
 
 
