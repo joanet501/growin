@@ -411,8 +411,8 @@ function deleteGardenId(gardenId) {
       var datos = @json($gardens);
         if (plant_id2 >8){
 
-        document.getElementById("proximoRiego").innerHTML = datos[garden_id].plants[plant_id2-9].next_water_date;
-        document.getElementById("ultimoRiego").innerHTML = datos[garden_id].plants[plant_id2-9].water_date;
+        document.getElementById("proximoRiego").innerHTML = datos[garden_id].plants[plant_id2%9].next_water_date;
+        document.getElementById("ultimoRiego").innerHTML = datos[garden_id].plants[plant_id2%9].water_date;
 
         }else{
 
@@ -511,12 +511,8 @@ function deleteGardenId(gardenId) {
         var $gardenId = document.getElementById(window.imageId).alt;
         var $plantId = document.getElementById(window.imageId).id;
         document.getElementById('gardenId').value = $gardenId;
+        document.getElementById('plantId').value = $plantId%9;
 
-        if ($plantId>8){
-            document.getElementById('plantId').value = $plantId-9;
-        }else{
-            document.getElementById('plantId').value = $plantId;
-        }
     }
     function regar()
     {
@@ -524,7 +520,7 @@ function deleteGardenId(gardenId) {
         var $plantId = document.getElementById(window.imageId).id;
         document.getElementById('gardenId3').value = $gardenId;
         if ($plantId>8){
-          document.getElementById('plantId3').value = $plantId-9;
+          document.getElementById('plantId3').value = $plantId%9;
         }else{
           document.getElementById('plantId3').value = $plantId;
         }
@@ -619,6 +615,11 @@ function cambiarHuerto(id) {
 
   </script>
   <!-- Fin Script Update Imagen -->
+  <script src="{{asset("js/bootstrap.min.js")}}"></script>
+  <script src="{{asset("js/jquery-3.2.1.slim.min.js")}}"></script>
+  <script src="{{asset("js/popper.min.js")}}"></script>
+  <script src="{{asset("js/selector.js")}}"></script>
+  <script src="{{asset("js/sort.js")}}"></script>
 
 
 </body>
