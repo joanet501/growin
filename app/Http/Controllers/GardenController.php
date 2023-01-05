@@ -9,6 +9,7 @@ use App\Models\Garden;
 use App\Models\Plant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use App\Http\Resources\UserResource;
 
 
 class GardenController extends Controller
@@ -45,10 +46,15 @@ class GardenController extends Controller
      */
     public function store(StoreGardenRequest $request)
     {
-        $newGarden = $request->all();
+        $numberGardens = count(auth()->user()->gardens);
+        $newGarden['name'] = "Huerto ".$numberGardens+1;
         $newGarden['user_id'] = Auth::user()->id;
-        $result = Garden::create($newGarden);
-        return $result;
+        Garden::create($newGarden);
+        //redirect to page
+        $user = Auth::user();
+        $user = UserResource::make($user);
+        $data = json_decode($user->toJson(), true);
+        return redirect()->back()->with($data);
     }
 
     /**
@@ -93,13 +99,13 @@ class GardenController extends Controller
      */
     public function destroy(DeleteGardenRequest $request)
     {
-        $garden = Garden::find($request->id);
-        if (!$garden) // Si no existe, ERRROR
-            return "Error! This garden does not exist.";
-        if (Auth::user()->id != $garden->user_id) // Si no pertenece al usuario, ERRROR
-            return "Error! You do not have permission to destroy this garden.";
+        $garden = Garden::find($request->garden_id);
         $garden->delete();
-        return "Garden deleted successfully.";
+        //redirect to page
+        $user = Auth::user();
+        $user = UserResource::make($user);
+        $data = json_decode($user->toJson(), true);
+        return redirect()->back()->with($data);
     }
 
 }

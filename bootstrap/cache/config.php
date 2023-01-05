@@ -398,14 +398,6 @@
       '/home/joan/Documentos/GrowIn/public/storage' => '/home/joan/Documentos/GrowIn/storage/app/public',
     ),
   ),
-  'fortify-options' => 
-  array (
-    'two-factor-authentication' => 
-    array (
-      'confirm' => true,
-      'confirmPassword' => true,
-    ),
-  ),
   'fortify' => 
   array (
     'guard' => 'web',
@@ -418,7 +410,7 @@
     'username' => 'email',
     'email' => 'email',
     'views' => true,
-    'home' => '/api/home',
+    'home' => '/home',
     'prefix' => '',
     'domain' => NULL,
     'limiters' => 
@@ -441,7 +433,6 @@
       1 => 'reset-passwords',
       2 => 'update-profile-information',
       3 => 'update-passwords',
-      4 => 'two-factor-authentication',
     ),
   ),
   'hashing' => 

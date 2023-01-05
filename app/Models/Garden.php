@@ -22,9 +22,9 @@ class Garden extends Model
 
     // RULES
     public static $createGardenRules = [
-        'name' => 'required|string',
+        'name' => 'nullable|string',
     ];
     public static $deleteRules = [
-        'id' => 'required',
+        'id' => 'nullable',
     ];
 }

@@ -27,23 +27,38 @@
         />
       </div>
       <div class="text-center fs-1 fw-bold">Crea tu cuenta!</div>
-      <form method="POST" action="{{ url('api/auth/register')}}">
+      <form method="POST" action="{{ url('/register')}}">
         @csrf
-      <div class="input-group mt-4">
-        <div class="input-group-text bg-dark">
-          <img
-            src="assets/username-icon.svg"
-            alt="username-icon"
-            style="height: 1rem"
-          />
-        </div>
-        <input
-          class="form-control bg-light"
-          type="text"
-          name="name"
-          placeholder="Nombre"
-        />
-      </div>
+        <div class="input-group mt-1">
+            <div class="input-group-text bg-dark">
+              <img
+                src="assets/mail-icon.png"
+                alt="mail-icon"id="email"
+                style="height: 1rem"
+              />
+            </div>
+            <input
+              class="form-control bg-light"
+              type="text"
+              placeholder="Nombre"
+              name="name"
+            />
+          </div>
+        <div class="input-group mt-1">
+            <div class="input-group-text bg-dark">
+              <img
+                src="assets/mail-icon.png"
+                alt="mail-icon"id="email"
+                style="height: 1rem"
+              />
+            </div>
+            <input
+              class="form-control bg-light"
+              type="text"
+              placeholder="Email"
+              name="email"
+            />
+          </div>
       <div class="input-group mt-1">
         <div class="input-group-text bg-dark">
           <img
@@ -62,29 +77,34 @@
       <div class="input-group mt-1">
         <div class="input-group-text bg-dark">
           <img
-            src="assets/mail-icon.png"
-            alt="mail-icon"id="email"
+            src="assets/password-icon.svg"
+            alt="password-icon"
             style="height: 1rem"
           />
         </div>
         <input
           class="form-control bg-light"
-          type="text"
-          placeholder="Email"
-          name="email"
+          type="password"
+          name="password_confirmation"
+          placeholder="Confirma tu contraseña"
         />
       </div>
+
       <button class="btn btn-dark text-white w-100 mt-4 fw-semibold shadow-sm" type="submit">
         Crear cuenta
     </button>
 
       </form>
+
+
       <div class="d-flex gap-1 justify-content-center mt-1">
         <div>¿Ya tienes cuenta?</div>
-        <a href="index.html" class="text-decoration-none text-info fw-semibold"
-          >Volver a inicio</a
-        >
+        <a onclick="window.location='{{ url('/login') }}'" class="text-decoration-none text-info fw-semibold">Volver al inicio</a>
       </div>
     </div>
+
+
+
+
   </body>
 </html>

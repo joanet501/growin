@@ -45,7 +45,10 @@
             Huertos
           </button>
           <ul class="dropdown-menu container-fluid">
-            <li><a class="dropdown-item" href="#">Huerto 1</a></li>
+            <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><a class="dropdown-item" href="#" onclick="cambiarHuerto(<?php echo e($garden['id']); ?>)"><?php echo e($garden['name']); ?></a></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
           </ul>
         </div>
       </div>
@@ -63,12 +66,20 @@
               Huertos
             </button>
             <ul class="dropdown-menu container-fluid">
-              <li><a class="dropdown-item" href="#">Huerto 1</a></li>
+                <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><a class="dropdown-item" href="#" onclick="cambiarHuerto(<?php echo e($key); ?>)"><?php echo e($garden['name']); ?></a></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
           </div>
         </div>
         <div class="col-3">
-          <button class="btn btn-primary btn-xs container-fluid" type="button">Crear Huerto</button>
+          <form method="POST" action="<?php echo e(url('api/garden/create')); ?>">
+            <?php echo method_field("POST"); ?>
+            <?php echo csrf_field(); ?>
+                 <button class="btn btn-primary btn-xs container-fluid" type="submit">Crear Huerto</button>
+        </form>
+
+
         </div>
         <div class="col-3">
           <button class="btn btn-primary btn-xs container-fluid" type="button">Modificar
@@ -96,9 +107,9 @@
                         </div>
                     <?php endfor; ?>
                 <?php else: ?>
-                    <?php for( $i=0 ; $i<9 ; $i++ ): ?>
+                    <?php for( $i=$key*9 ; $i<9+$key*9 ; $i++ ): ?>
                         <div class="col-4 col-sm-4 d-none"><a onclick="chooser()"><img
-                            class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i]['category']['image_url'] ?? 'assets/Huerto.png')); ?>"  alt="<?php echo e($key); ?>" draggable="false" id="<?php echo e($i); ?>" onclick="getImageId(event)">
+                            class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i-$key*9]['category']['image_url'] ?? 'assets/Huerto.png')); ?>"  alt="<?php echo e($key); ?>" draggable="false" id="<?php echo e($i); ?>" onclick="getImageId(event)">
                         </a>
                         </div>
                     <?php endfor; ?>
@@ -111,7 +122,7 @@
           <div class="col-sm-3" draggable="false">
             <div class=" d-none d-md-flex flex-column flex-shrink-0 p-3 text-white bg-dark container-fluid" id="lat-bar">
 
-                <img  src="<?php echo e(asset("assets/Huerto.png")); ?>" alt="Test">
+                <img  src="<?php echo e(asset("assets/Huerto.png")); ?>">
 
               <hr/>
 
@@ -324,20 +335,32 @@
 
             <div class="col-md-12 text-center" id="desc">
               <p>
-                Estás seguro de que deseas borrar este huerto?
-              </p>
-            </div>
-            <div class="col-md-6">
-              <button class="btn btn-danger container-fluid" type="button" data-dismiss="modal">
-                Aceptar
-              </button>
-            </div>
-            <div class="col-md-6">
-              <button class="btn btn-success container-fluid" type="button" data-dismiss="modal">
-                Cancelar
-              </button>
-            </div>
+                ¿Qué huerto quieres borrar?
 
+            </p>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle container-fluid" type="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Elige un huerto
+                </button>
+                <form method="POST" action="<?php echo e(url("/garden/delete")); ?>">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="garden_id" id="gardenIdDelete">
+                    <ul class="dropdown-menu container-fluid">
+                      <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li>
+                          <button type="submit" onclick="deleteGardenId(<?php echo e($garden['id']); ?>)" class="dropdown-item text-dark">
+                            <?php echo e($garden['name']); ?>
+
+                          </button>
+                        </li>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                  </form>
+
+              </div>
+
+            </div>
         </div>
 
 
@@ -346,6 +369,15 @@
       </div>
     </div>
   </div>
+
+  <!--cambiar id huerto borrado -->
+
+<script>
+function deleteGardenId(gardenId) {
+  document.getElementById('gardenIdDelete').value = gardenId;
+}
+
+</script>
 
 
 <!-- Script Lightbox -->
@@ -416,8 +448,6 @@
     document.getElementById('name').innerHTML = text;
 
   });
-
-
   </script>
 
   <!-- Fin Scripts Lightbox Renombrar Planta-->
@@ -485,14 +515,23 @@
         var $gardenId = document.getElementById(window.imageId).alt;
         var $plantId = document.getElementById(window.imageId).id;
         document.getElementById('gardenId').value = $gardenId;
-        document.getElementById('plantId').value = $plantId;
+
+        if ($plantId>8){
+            document.getElementById('plantId').value = $plantId-9;
+        }else{
+            document.getElementById('plantId').value = $plantId;
+        }
     }
     function regar()
     {
         var $gardenId = document.getElementById(window.imageId).alt;
         var $plantId = document.getElementById(window.imageId).id;
         document.getElementById('gardenId3').value = $gardenId;
-        document.getElementById('plantId3').value = $plantId;
+        if ($plantId>8){
+          document.getElementById('plantId3').value = $plantId-9;
+        }else{
+          document.getElementById('plantId3').value = $plantId;
+        }
     }
   </script>
 
@@ -517,6 +556,33 @@
     }
   </script>
   <!-- Fin Chooser funcional -->
+
+<!-- Cambiar de huerto -->
+
+<script>
+
+function cambiarHuerto(id) {
+  const elements = document.querySelectorAll('[alt]');
+  elements.forEach(element => {
+    if (element.getAttribute('alt') === String(id)) {
+      element.parentElement.parentElement.classList.remove('d-none');
+      element.parentElement.parentElement.classList.add('d-block');
+    } else if (!isNaN(element.getAttribute('alt'))) {
+        element.parentElement.parentElement.classList.remove('d-block');
+      element.parentElement.parentElement.classList.add('d-none');
+    }
+  });
+}
+
+
+
+
+</script>
+
+
+<!-- Cambiar de huerto fin -->
+
+
 
   <!-- Script Update Imagen -->
 

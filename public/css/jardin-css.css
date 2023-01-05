@@ -263,7 +263,7 @@ justify-content: center;
 
 
 a:link, a:visited, a:hover, a:active {
-    color: white!important;
+    color: rgb(0, 0, 0)!important;
   }
 
 .popup {

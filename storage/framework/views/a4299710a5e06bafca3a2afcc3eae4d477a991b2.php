@@ -47,7 +47,7 @@
             name="email"
           class="form-control bg-light"
           type="text"
-          placeholder="Usuario"
+          placeholder="Email"
           id="email"
           value="<?php echo e(old('email')); ?>"
         />
@@ -93,7 +93,7 @@
 </form>
       <div class="d-flex gap-1 justify-content-center mt-1">
         <div>¿Aun no tienes cuenta?</div>
-        <a onclick="window.location='<?php echo e(url('/register-web')); ?>'" class="text-decoration-none text-info fw-semibold">Registrar</a>
+        <a onclick="window.location='<?php echo e(url('/register')); ?>'" class="text-decoration-none text-info fw-semibold">Registrar</a>
 
         </div>
 
