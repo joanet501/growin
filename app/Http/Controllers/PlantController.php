@@ -125,8 +125,17 @@ class PlantController extends Controller
         $garden = $garden[$request->gardenId];
         $plants = $garden->plants;
         $waterPlant = Plant::find($plants[$request->plantId]->id);
+        $today = Carbon::now()->format('d-m-Y');
+        if ($waterPlant->category_id == 1){
+            $nextWaterDay = Carbon::now()->addDays(3)->format('d-m-Y');
+        }else if ($waterPlant->category_id == 2){
+            $nextWaterDay = Carbon::now()->addDays(5)->format('d-m-Y');
+        }else{
+            $nextWaterDay = Carbon::now()->addDays(2)->format('d-m-Y');
+        }
         $waterPlant->update([
-            'water_date' => Carbon::now()->format('d-m-Y'),
+            'water_date' =>$today,
+            'next_water_date' =>$nextWaterDay,
         ]);
         //redirect to page
         $user = Auth::user();

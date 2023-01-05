@@ -19,6 +19,7 @@ class PlantResource extends JsonResource
             "category" => PlantCategoryResource::make($this->plantCategory),
             "name" => $this->name,
             "water_date" => $this->water_date,
+            "next_water_date" => $this->next_water_date,
         ];
     }
 }

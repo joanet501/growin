@@ -126,7 +126,7 @@
 
               <hr/>
 
-                  <a>
+                  <a id="test">
                     Descripción: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                     incididunt ut labore et dolore magna aliqua. Id cursus metus aliquam eleifend mi in nulla posuere.
 
@@ -175,7 +175,7 @@
       </div>
 
         <div class="col-md-6 text-center" id="desc">
-          <p id="descriptionPlant">
+          <p class="d-none d-md-block"id="descriptionPlant">
             Descripción de la planta
           </p>
         </div>
@@ -400,13 +400,29 @@ function deleteGardenId(gardenId) {
 
   <script>
     function openLightboxPlanta() {
-      // Show the lightbox and add a dark background
-
       document.getElementById("lightboxPlanta").style.display = "block";
       updateLightboxImage();
-
-
+      updateWaterDate();
     }
+
+    function updateWaterDate(){
+      var plant_id2 = parseInt(document.getElementById(window.imageId).id);
+      var garden_id = parseInt(document.getElementById(window.imageId).alt);
+      var datos = @json($gardens);
+        if (plant_id2 >8){
+
+        document.getElementById("proximoRiego").innerHTML = datos[garden_id].plants[plant_id2-9].next_water_date;
+        document.getElementById("ultimoRiego").innerHTML = datos[garden_id].plants[plant_id2-9].water_date;
+
+        }else{
+
+      document.getElementById("proximoRiego").innerHTML = datos[garden_id].plants[plant_id2].next_water_date;
+      document.getElementById("ultimoRiego").innerHTML = datos[garden_id].plants[plant_id2].water_date;
+        }
+      plant_id2 = 0;
+      garden_id = 0;
+    }
+
     function closeLightboxPlanta() {
       // Hide the lightbox and remove the dark background
       document.getElementById("lightboxPlanta").style.display = "none";
@@ -457,26 +473,7 @@ function deleteGardenId(gardenId) {
   <!-- Fin script renombrar -->
 
 
-    <script>
-  var data = {
-      "0" : { img: "{{asset("assets/Brote.jpg")}}", text1:"Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.", text2:""},
-      "1" : { img: "{{asset("assets/Tomate.jpg")}}", text1:"Esto es un tomate", text2:"Su riego es cada 3 semanas"},
-      "2" : { img: "{{asset("assets/Patata.jpg")}}", text1:"Esto es una patata", text2:"Su riego es cada 2 semanas"},
-      "3" : { img: "{{asset("assets/Cebolla.jpg")}}", text1:"Esto es una cebolla", text2:"Su riego es cada semana"},
-  };
 
-  $('#selector').change(function() {
-      var value = $(this).val();
-      if (data[value] != undefined)
-      {
-          $('#prod-image').attr('src', data[value].img);
-          $('#desc').text(data[value].text1);
-          $('#riego').text(data[value].text2);
-
-      }
-  });
-
-    </script>
   <script>
     function getImageId(event) {
       var image = event.target;
@@ -545,7 +542,6 @@ function deleteGardenId(gardenId) {
       if (ruta.includes("tomate") || ruta.includes("patata") || ruta.includes("cebolla")) {
         // If the src is "image1.jpg", open lightbox 1
         openLightboxPlanta();
-        document.getElementById("lightboxPlanta").style.display = "block";
 
 
       } else {
@@ -589,7 +585,7 @@ function cambiarHuerto(id) {
   function updateLightboxImage() {
 
     var foto = document.getElementById('lightbox-image');
-    var ruta = document.getElementById(window.imageId).src
+    var ruta = document.getElementById(window.imageId).src;
 
     if(ruta.includes("tomate")){
     foto.src="{{asset("assets/Tomate.jpg")}}";
@@ -605,20 +601,16 @@ function cambiarHuerto(id) {
     }
 
   }
-    function updateLightboxWaterDate(){
-
-    }
-
     function updateLightboxDescriptionTomate() {
         document.getElementById('descriptionPlant').innerHTML = "El tomate es una fruta comestible de la familia de las solanáceas, de la que existen cientos de variedades de diferentes tamaños, formas y colores. Se consumen principalmente en la cocina como ingrediente en diversos platos, y también se pueden comer frescos como fruta."
         document.getElementById('namePlant').innerHTML = "Tomate";
     }
     function updateLightboxDescriptionPatata() {
-        document.getElementById('descriptionPlant').innerHTML = "La cebolla es una hortaliza bulbosa de la familia de las liliáceas, que se cultiva principalmente por su bulbo que es comestible. La cebolla se utiliza a menudo en la cocina como ingrediente base en diversos platos y salsas. También se puede comer cruda o cocida y es rica en vitamina C y otros nutrientes."
+        document.getElementById('descriptionPlant').innerHTML = "La patata es un tubérculo comestible perteneciente a la familia de las solanáceas. Hay muchas variedades de patatas, que se diferencian en tamaño, forma, color y sabor. Las patatas se consumen cocidas, fritas o al horno y son una fuente importante de energía y nutrientes, como el hierro, el potasio y el calcio."
         document.getElementById('namePlant').innerHTML = "Patata";
     }
     function updateLightboxDescriptionCebolla() {
-        document.getElementById('descriptionPlant').innerHTML = "La patata es un tubérculo comestible perteneciente a la familia de las solanáceas. Hay muchas variedades de patatas, que se diferencian en tamaño, forma, color y sabor. Las patatas se consumen cocidas, fritas o al horno y son una fuente importante de energía y nutrientes, como el hierro, el potasio y el calcio."
+        document.getElementById('descriptionPlant').innerHTML = "La cebolla es una hortaliza bulbosa de la familia de las liliáceas, que se cultiva principalmente por su bulbo que es comestible. La cebolla se utiliza a menudo en la cocina como ingrediente base en diversos platos y salsas. También se puede comer cruda o cocida y es rica en vitamina C y otros nutrientes."
         document.getElementById('namePlant').innerHTML = "Cebolla";
 
     }
@@ -627,13 +619,6 @@ function cambiarHuerto(id) {
 
   </script>
   <!-- Fin Script Update Imagen -->
-
-  <script type="text/javascript" src="{{asset("Scripts/jquery-2.1.1.min.js")}}"></script>
-  <script type="text/javascript" src="{{asset("Scripts/bootstrap.min.js")}}"></script>
-  <script type="text/javascript" src="{{asset("js/sort.js")}}"></script>
-  <script type="text/javascript" src="{{asset("js/popper.min.js")}}"></script>
-  <script type="text/javascript" src="{{asset("js/bootstrap.min.js")}}"></script>
-  <script type="text/javascript" src="{{asset("js/pictureChange.js")}}"></script>
 
 
 </body>

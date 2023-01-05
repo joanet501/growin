@@ -21,7 +21,8 @@ class Plant extends Model
         'name',
         'water_date',
         'category_id',
-        'garden_id'
+        'garden_id',
+        'next_water_date',
     ];
 
     public static $destroyRules = [
