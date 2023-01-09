@@ -519,7 +519,6 @@ function deleteGardenId(gardenId) {
     } else if (selectedValue === "3") {
         document.getElementById('plantType').value = 3;
     }
-
   }
 
 
