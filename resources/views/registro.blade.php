@@ -32,9 +32,9 @@
         <div class="input-group mt-1">
             <div class="input-group-text bg-dark">
               <img
-                src="assets/mail-icon.png"
-                alt="mail-icon"id="email"
-                style="height: 1rem"
+              src="assets/username-icon.svg"
+              alt="username-icon"
+              style="height: 1rem"
               />
             </div>
             <input

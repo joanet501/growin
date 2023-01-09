@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 use App\Http\Resources\GardenResource;
 class User extends Authenticatable
@@ -17,6 +19,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Garden::class);
     }
+
+    protected function getPictureAttribute()
+    {
+        $name = Auth::user()->name;
+        $name = "https://ui-avatars.com/api/?name=".$name."&size=256&color=fff&background=658354";
+        return $name;
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *

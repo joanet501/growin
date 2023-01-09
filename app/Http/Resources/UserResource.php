@@ -16,6 +16,7 @@ class UserResource extends JsonResource
     {
         return [
             'name' => Auth::user()->name,
+            'picture' => Auth::user()->picture,
             'email' => Auth::user()->email,
             'gardens' => GardenResource::collection(Auth::user()->gardens),
         ];

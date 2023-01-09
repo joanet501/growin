@@ -100,6 +100,7 @@ class GardenController extends Controller
     public function destroy(DeleteGardenRequest $request)
     {
         $garden = Garden::find($request->garden_id);
+        $plants = $garden->plants()->delete();
         $garden->delete();
         //redirect to page
         $user = Auth::user();

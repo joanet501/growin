@@ -25,17 +25,7 @@
 
 <body class="p-3 m-0 border-0 bd-example bd-example-row"  style="background-image: url('<?php echo e(asset("assets/bg.jpg")); ?>');">
 
-  <div class="container">
-    <div class = "row d-flex d-sm-none">
-      <div class = "col-12">
-      <div class="card bg-secondary" id = "sm-card">
-        <div class="card-body">
-          <p class="card-title text-white" id="cardtext">                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div>
+
   <div class="container">
     <div class="row d-flex d-sm-none">
       <div class="col-8">
@@ -45,19 +35,39 @@
             Huertos
           </button>
           <ul class="dropdown-menu container-fluid">
-            <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <li><a class="dropdown-item" href="#" onclick="cambiarHuerto(<?php echo e($garden['id']); ?>)"><?php echo e($garden['name']); ?></a></li>
+            <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><a class="dropdown-item" onclick="cambiarHuerto(<?php echo e($key); ?>)"><?php echo e($garden['name']); ?></a></li>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
           </ul>
         </div>
       </div>
       <div class="col-4">
-        <button class="btn btn-primary btn-xs container-fluid" type="button">Opciones
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle container-fluid" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Opciones
           </button>
+          <ul class="dropdown-menu container-fluid">
+            <li>
+                <a class="dropdown-item"  href="<?php echo e(url('api/garden/create')); ?>" onclick="event.preventDefault(); document.getElementById('gardenCreate').submit();" >Crear huerto</button></a>
+            </li>
+            <li>
+                <a class="dropdown-item" data-toggle="modal" data-target="#ventanaConfirmacion" >Borrar huerto</a>
+
+            </li>
+
+            <li>
+                <a class="dropdown-item"  href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Cerrar sesión</button></a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
 
       </div>
     </div>
+    <div class="container">
     <div class="row d-none d-sm-flex">
         <div class="col-3">
           <div class="dropdown">
@@ -73,7 +83,7 @@
           </div>
         </div>
         <div class="col-3">
-          <form method="POST" action="<?php echo e(url('api/garden/create')); ?>">
+          <form method="POST" id="gardenCreate" action="<?php echo e(url('api/garden/create')); ?>">
             <?php echo method_field("POST"); ?>
             <?php echo csrf_field(); ?>
                  <button class="btn btn-primary btn-xs container-fluid" type="submit">Crear Huerto</button>
@@ -89,7 +99,7 @@
             <a data-toggle="modal" data-target="#ventanaConfirmacion"><button class="btn btn-primary btn-xs container-fluid" type="button">Borrar Huerto</button></a>
         </div>
       </div>
-  </div>
+    </div>
 
 
 
@@ -119,37 +129,34 @@
 
           </div>
 
+
           <div class="col-sm-3" draggable="false">
             <div class=" d-none d-md-flex flex-column flex-shrink-0 p-3 text-white bg-dark container-fluid" id="lat-bar">
 
-                <img  src="<?php echo e(asset("assets/Huerto.png")); ?>">
 
-              <hr/>
 
-                  <a id="test">
-                    Descripción: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Id cursus metus aliquam eleifend mi in nulla posuere.
+                <img  src="<?php echo e($picture); ?>">
 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Id cursus metus aliquam eleifend mi in nulla posuere.
-
-                  </a>
-                </li>
                 <hr>
-                  <a>
-                    Último regado: 10-10-1010
-                  </a>
-                </li>
-                  <a>
-                    Próximo regado: 15-10-1010
-                  </a>
+                <div class="col-12" style="padding:0px">
+                    <p><?php echo e($name); ?></p>
+                </div>
+                <div class="col-12" style="padding:0px">
+                    <p><?php echo e($email); ?></p>
+                </div>
 
-                  <a id="prueba">
-                    Prueba
-                  </a>
-                </li>
               </ul>
-              <hr/>
+              <hr>
+              <a class="font-italic" id="test">
+                El amor por la jardinería es una semilla que una vez sembrada nunca muere. <br> <br> Gertrude Jekyll (1843-1932) horticultora y diseñadora de jardines, inglesa.              </a>
+              <hr>
+              <div class="col-12">
+                <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
+                </form>
+              <a class="btn btn-warning"  href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Cerrar sesión</button></a>
+
+        </div>
             </div>
           </div>
         </div>
@@ -157,7 +164,19 @@
     </div>
   </div>
   </div>
+  <div class="container" >
+    <div class = "row d-flex d-sm-none">
+      <div class = "col-12">
+      <div class="card bg-secondary" id = "sm-card" style="padding-top: 0pxcd ">
+        <div class="card-body">
+          <p class=" text-white text-center" id="cardtext">Nombre: <?php echo e($name); ?></p>
+          <p class=" text-white text-center" id="cardtext">Email: <?php echo e($email); ?></p>
 
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
       <!-- Lightbox con planta -->
 <div id="lightboxPlanta" style="display:none">
     <div class="container-fluid">
@@ -311,6 +330,8 @@
     </div>
   </div>
 
+<!--  -->
+
 
 <!-- Lightbox renombrar planta -->
 
@@ -412,13 +433,13 @@ function deleteGardenId(gardenId) {
       var datos = <?php echo json_encode($gardens, 15, 512) ?>;
         if (plant_id2 >8){
 
-        document.getElementById("proximoRiego").innerHTML = datos[garden_id].plants[plant_id2%9].next_water_date;
-        document.getElementById("ultimoRiego").innerHTML = datos[garden_id].plants[plant_id2%9].water_date;
+        document.getElementById("proximoRiego").innerHTML ="Próximo riego: " + datos[garden_id].plants[plant_id2%9].next_water_date;
+        document.getElementById("ultimoRiego").innerHTML ="Último riego: " +  datos[garden_id].plants[plant_id2%9].water_date;
 
         }else{
 
-      document.getElementById("proximoRiego").innerHTML = datos[garden_id].plants[plant_id2].next_water_date;
-      document.getElementById("ultimoRiego").innerHTML = datos[garden_id].plants[plant_id2].water_date;
+      document.getElementById("proximoRiego").innerHTML ="Próximo riego: " +  datos[garden_id].plants[plant_id2].next_water_date;
+      document.getElementById("ultimoRiego").innerHTML = "Último riego: " + datos[garden_id].plants[plant_id2].water_date;
         }
       plant_id2 = 0;
       garden_id = 0;

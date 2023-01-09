@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\User;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +18,28 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        //Emails regar plantas
+        $schedule->call(function () {
+            $users = User::all();
+            foreach ($users as $user) {
+                $gardens = $user->gardens;
+                $plantsToWater = [];
+                foreach($gardens as $garden) {
+                    $plants = $garden->plants;
+                    foreach($plants as $plant) {
+                        $today = Carbon::now()->format('d-m-Y');
+                        if ($plant->next_water_date == $today) {
+                            array_push($plantsToWater, $plant);
+                        }
+                    }
+                }
+                if (count($plantsToWater) != 0){
+                    $plantsToWater['user'] = $user;
+                }
+            }
+
+        })->daily();
     }
 
     /**
