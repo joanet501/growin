@@ -3,10 +3,13 @@
     min-width: 100%
 }
 
-body {
-    background-color: #3c3c3c;
-    background-image: url('https://images.rawpixel.com/image_1000/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcGQxOS1taW50eS0wMi1sZWFmXzEuanBn.jpg');
-    height: 100vh;
+body  {
+    background-image: url("assets/bg.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -moz-background-size:cover;
+    background-size: cover;
+
 }
 
 .flex {
@@ -40,7 +43,7 @@ body {
     border: none;
     margin-bottom: 30px;
 
-    
+
 }
 
 .bd-example-row [class^="col"], .bd-example-cssgrid .grid>* {
@@ -53,14 +56,14 @@ body {
 .btn-primary {
     color: #fff;
     background-color: #6c757d !important;
-    border-color: #6c757d !important; 
+    border-color: #6c757d !important;
 }
 
 hr {
     border: 0;
     clear:both;
     display:block;
-    width: 96%;               
+    width: 96%;
     background-color:#ffffff;
     height: 1px;
   }
@@ -110,7 +113,7 @@ font-style: normal;
 a {
 text-decoration: none;
 color: inherit;
-} 
+}
 
 #sm-card{
     margin-top: 0;

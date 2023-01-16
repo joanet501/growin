@@ -14,7 +14,7 @@ use App\Models\User;
 use App\Models\Garden;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Mail;
 class PlantController extends Controller
 {
     /**
@@ -34,6 +34,8 @@ class PlantController extends Controller
      */
     public function create(Request $request)
     {
+
+
         $gardenId = $request->gardenId;
         $gardens = Auth::user()->gardens;
         if ($request->plantType == 0){

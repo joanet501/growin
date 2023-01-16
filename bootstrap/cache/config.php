@@ -541,11 +541,11 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'mailhog',
-        'port' => '1025',
-        'encryption' => NULL,
-        'username' => NULL,
-        'password' => NULL,
+        'host' => 'mail.smtp2go.com',
+        'port' => '2525',
+        'encryption' => 'ssl',
+        'username' => 'jvidal@abalit.org',
+        'password' => 'growin123app',
         'timeout' => NULL,
         'local_domain' => NULL,
       ),

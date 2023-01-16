@@ -29,6 +29,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/plant/create', [PlantController::class, 'create']);
     Route::post('/plant/water', [PlantController::class, 'water']);
     Route::post('/garden/delete', [GardenController::class, 'destroy']);
+    Route::post('/garden/rename', [GardenController::class, 'rename']);
 
     Route::get('/home', [UserController::class, 'home']);
     Route::post('/auth/register', [AuthController::class, 'createUser']);
@@ -38,6 +39,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', function () {
         return redirect('login');
     });
+
+
+
 
 
 

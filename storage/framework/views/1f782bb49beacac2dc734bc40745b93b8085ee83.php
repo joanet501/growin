@@ -23,7 +23,8 @@
 
 
 
-<body class="p-3 m-0 border-0 bd-example bd-example-row"  style="background-image: url('<?php echo e(asset("assets/bg.jpg")); ?>');">
+<body class="p-3 m-0 border-0 bd-example bd-example-row"  style="background-image: url('<?php echo e(asset("assets/bg.jpg")); ?>'); background-size:cover">
+
 
 
   <div class="container">
@@ -67,6 +68,9 @@
 
       </div>
     </div>
+
+
+
     <div class="container">
     <div class="row d-none d-sm-flex">
         <div class="col-3">
@@ -92,8 +96,7 @@
 
         </div>
         <div class="col-3">
-          <button class="btn btn-primary btn-xs container-fluid" type="button">Modificar
-            Huerto</button>
+            <a data-toggle="modal" data-target="#ventanaConfirmacion2"><button class="btn btn-primary btn-xs container-fluid" type="button">Modificar Huerto</button></a>
         </div>
         <div class="col-3">
             <a data-toggle="modal" data-target="#ventanaConfirmacion"><button class="btn btn-primary btn-xs container-fluid" type="button">Borrar Huerto</button></a>
@@ -111,16 +114,18 @@
                 <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if($key == 0): ?>
                     <?php for( $i=0 ; $i < 9; $i++ ): ?>
-                        <div class="col-4 col-sm-4"><a onclick="chooser()">
+                        <div class="col-4 col-sm-4">
+                          <a onclick="chooser()">
                             <img class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i]['category']['image_url'] ?? 'assets/Huerto.png')); ?>" alt="<?php echo e($key); ?>" draggable="false" id="<?php echo e($i); ?>" onclick="getImageId(event)">
-                            </a>
+                          </a>
                         </div>
                     <?php endfor; ?>
                 <?php else: ?>
                     <?php for( $i=$key*9 ; $i<9+$key*9 ; $i++ ): ?>
-                        <div class="col-4 col-sm-4 d-none"><a onclick="chooser()"><img
-                            class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i-$key*9]['category']['image_url'] ?? 'assets/Huerto.png')); ?>"  alt="<?php echo e($key); ?>" draggable="false" id="<?php echo e($i); ?>" onclick="getImageId(event)">
-                        </a>
+                        <div class="col-4 col-sm-4 d-none">
+                          <a onclick="chooser()">
+                            <img class="card-img-top img-fluid" src=" <?php echo e(asset($garden['plants'][$i-$key*9]['category']['image_url'] ?? 'assets/Huerto.png')); ?>"  alt="<?php echo e($key); ?>" draggable="false" id="<?php echo e($i); ?>" onclick="getImageId(event)">
+                          </a>
                         </div>
                     <?php endfor; ?>
                 <?php endif; ?>
@@ -182,8 +187,8 @@
     <div class="container-fluid">
       <button id="lightbox_close" onclick="closeLightboxPlanta()">&times;</button>
       <div class="row">
-        <div class="col-md-6">
-         <p id="namePlant"> Nombre planta </p>
+        <div class="col-md-12">
+         <p class ="text-center"id="namePlant"></p>
         </div>
         <div class="col-md-6">
           <div>
@@ -194,7 +199,10 @@
       </div>
 
         <div class="col-md-6 text-center" id="desc">
-          <p class="d-none d-md-block"id="descriptionPlant">
+          <p class="d-none d-md-block " style="display: flex;
+          align-items: center;
+          justify-content: center;
+                                    "id="descriptionPlant" >
             Descripción de la planta
           </p>
         </div>
@@ -208,7 +216,7 @@
         </div>
 
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <form method="POST" action="<?php echo e(url('/plant/delete')); ?>">
                 <?php echo method_field("POST"); ?>
                 <?php echo csrf_field(); ?>
@@ -221,7 +229,7 @@
             </form>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <form method="POST" action="<?php echo e(url('/plant/water')); ?>">
                 <?php echo method_field("POST"); ?>
                 <?php echo csrf_field(); ?>
@@ -234,7 +242,7 @@
         </form>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
          <button class="btn btn-warning container-fluid" type="button" onclick="openLightboxRenombre()">
            Renombrar
          </button>
@@ -268,24 +276,15 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6">
-          <!-- <div class="dropdown">
-
-            <button class="btn btn-primary dropdown-toggle container-fluid " type="button" id="dropdownMenuButton" data-toggle="dropdown">
-              Plantas
-            </button>
-            <div class="dropdown-menu container-fluid" aria-labelledby="dropdownMenuButton">
-               <a class="dropdown-item disabled" href="#">Tomate</a> <a class="dropdown-item" href="#">Patata</a> <a class="dropdown-item" href="#">Cebolla</a>
-            </div>
-          </div> -->
-          <select id="selector" class="container-fluid">
-            <option value="0">Selecciona una planta</option>
-            <option value="1">Tomate</option>
-            <option value="2">Patata</option>
-            <option value="3">Cebolla</option>
+          <select id="selector" value="0" class="container-fluid">
+            <option value="0" >Selecciona una planta</option>
+            <option value="1" onclick="pictureChange()">Tomate</option>
+            <option value="2" onclick="pictureChange()">Patata</option>
+            <option value="3" onclick="pictureChange()">Cebolla</option>
         </select>
 
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div>
             <img id="prod-image" src="assets/Brote.jpg" class="d-flex flex-column container-fluid"/>
         </div>
@@ -296,11 +295,7 @@
             Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.
           </p>
         </div>
-        <div class="col-md-6 text-center" id="riego">
-          <p>
 
-          </p>
-        </div>
 
 
         <div class="col-md-6">
@@ -393,9 +388,63 @@
 
   <!--cambiar id huerto borrado -->
 
+  <div class="modal fade" id="ventanaConfirmacion2" tabindex="-1" role="dialog" aria-labelledby="tituloVentana"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" background-color="#3c3c3c" color="white">
+      <div class="modal-content">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-md-12 text-center" id="desc">
+
+            <div class="dropdown">
+                <form method="POST" action="<?php echo e(url("/garden/rename")); ?>">
+                    <?php echo csrf_field(); ?>
+                    <p>
+                        <h4>Escribe el nombre del huerto</h4>
+                    </p>
+
+                    <input type="text" name="garden_name" id="name">
+                    <br> <br>
+                <button class="btn btn-secondary dropdown-toggle container-fluid" type="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Selecciona el huerto a modificar
+                </button>
+
+                    <input type="hidden" name="garden_id" id="gardenIdDelete2">
+                    <ul class="dropdown-menu container-fluid">
+                      <?php $__currentLoopData = $gardens; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $garden): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li>
+
+                          <button type="submit" onclick="deleteGardenId2(<?php echo e($garden['id']); ?>)" class="dropdown-item text-dark">
+                            <?php echo e($garden['name']); ?>
+
+                          </button>
+                        </li>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                  </form>
+
+              </div>
+
+            </div>
+        </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 <script>
 function deleteGardenId(gardenId) {
   document.getElementById('gardenIdDelete').value = gardenId;
+}
+function deleteGardenId2(gardenId) {
+  document.getElementById('gardenIdDelete2').value = gardenId;
 }
 
 </script>
@@ -412,6 +461,7 @@ function deleteGardenId(gardenId) {
     function closeLightbox() {
       // Hide the lightbox and remove the dark background
       document.getElementById("lightbox").style.display = "none";
+      document.getElementById("prod-image").src="<?php echo e(asset('assets/Brote.jpg')); ?>";
 
     }
   </script>
@@ -514,10 +564,15 @@ function deleteGardenId(gardenId) {
     document.getElementById('gardenId2').value = $gardenId;
 
     if (selectedValue === "1") {
+        document.getElementById('prod-image').src="<?php echo e(asset('assets/Tomate.jpg')); ?>"
         document.getElementById('plantType').value = 1;
     } else if (selectedValue === "2") {
+      document.getElementById('prod-image').src="<?php echo e(asset('assets/Patata.jpg')); ?>"
+
         document.getElementById('plantType').value = 2;
     } else if (selectedValue === "3") {
+      document.getElementById('prod-image').src="<?php echo e(asset('assets/Cebolla.jpg')); ?>"
+
         document.getElementById('plantType').value = 3;
     }
   }
@@ -552,6 +607,7 @@ function deleteGardenId(gardenId) {
 
 <script>
     function chooser() {
+
       // Get the image element
       var ruta = document.getElementById(window.imageId).src
 
@@ -631,16 +687,14 @@ function cambiarHuerto(id) {
         document.getElementById('namePlant').innerHTML = "Cebolla";
 
     }
-
-
-
   </script>
+
   <!-- Fin Script Update Imagen -->
   <script src="<?php echo e(asset("js/bootstrap.min.js")); ?>"></script>
   <script src="<?php echo e(asset("js/jquery-3.2.1.slim.min.js")); ?>"></script>
   <script src="<?php echo e(asset("js/popper.min.js")); ?>"></script>
-  <script src="<?php echo e(asset("js/selector.js")); ?>"></script>
   <script src="<?php echo e(asset("js/sort.js")); ?>"></script>
+  <script src="<?php echo e(asset("js/app.js")); ?>"></script>
 
 
 </body>

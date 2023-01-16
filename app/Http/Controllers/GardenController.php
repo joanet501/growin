@@ -10,7 +10,7 @@ use App\Models\Plant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\Http\Resources\UserResource;
-
+use Illuminate\Http\Request as HttpRequest;
 
 class GardenController extends Controller
 {
@@ -102,6 +102,19 @@ class GardenController extends Controller
         $garden = Garden::find($request->garden_id);
         $plants = $garden->plants()->delete();
         $garden->delete();
+        //redirect to page
+        $user = Auth::user();
+        $user = UserResource::make($user);
+        $data = json_decode($user->toJson(), true);
+        return redirect()->back()->with($data);
+    }
+
+    public function rename(HttpRequest $request)
+    {
+        $garden = Garden::find($request->garden_id);
+        $garden->update([
+            'name' => $request->garden_name,
+        ]);
         //redirect to page
         $user = Auth::user();
         $user = UserResource::make($user);
