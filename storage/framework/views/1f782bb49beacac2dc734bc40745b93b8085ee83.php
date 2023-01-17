@@ -12,6 +12,9 @@
 
   <!-- Optional theme -->
   <link rel="stylesheet" href="<?php echo e(asset('bootstrap/css/bootstrap-theme.min.css')); ?>">
+
+  <script src="https://kit.fontawesome.com/ce20c6718d.js" crossorigin="anonymous"></script>
+
   <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -144,22 +147,22 @@
 
                 <hr>
                 <div class="col-12" style="padding:0px">
-                    <p><?php echo e($name); ?></p>
+                    <p class="h6"><?php echo e($name); ?></p>
                 </div>
                 <div class="col-12" style="padding:0px">
-                    <p><?php echo e($email); ?></p>
+                    <p class="h6"><?php echo e($email); ?></p>
                 </div>
 
               </ul>
               <hr>
-              <a class="font-italic" id="test">
+              <a class=" h6 font-italic" id="test">
                 El amor por la jardinería es una semilla que una vez sembrada nunca muere. <br> <br> Gertrude Jekyll (1843-1932) horticultora y diseñadora de jardines, inglesa.              </a>
               <hr>
               <div class="col-12">
                 <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
                 </form>
-              <a class="btn btn-warning"  href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Cerrar sesión</button></a>
+              <a class="btn btn-danger text-white"  href="<?php echo e(route('logout')); ?>" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Cerrar sesión</button></a>
 
         </div>
             </div>
@@ -174,8 +177,8 @@
       <div class = "col-12">
       <div class="card bg-secondary" id = "sm-card" style="padding-top: 0pxcd ">
         <div class="card-body">
-          <p class=" text-white text-center" id="cardtext">Nombre: <?php echo e($name); ?></p>
-          <p class=" text-white text-center" id="cardtext">Email: <?php echo e($email); ?></p>
+          <p class=" h6 text-white text-center" id="cardtext">Nombre: <?php echo e($name); ?></p>
+          <p class=" h6 text-white text-center" id="cardtext">Email: <?php echo e($email); ?></p>
 
         </div>
       </div>
@@ -185,10 +188,10 @@
       <!-- Lightbox con planta -->
 <div id="lightboxPlanta" style="display:none">
     <div class="container-fluid">
-      <button id="lightbox_close" onclick="closeLightboxPlanta()">&times;</button>
+        <div  onclick="closeLightboxPlanta()" ><i class="fa-3x fa-sharp fa-solid fa-rectangle-xmark"></i></div>
       <div class="row">
         <div class="col-md-12">
-         <p class ="text-center"id="namePlant"></p>
+         <p class ="text-center h1"id="namePlant"></p>
         </div>
         <div class="col-md-6">
           <div>
@@ -199,55 +202,51 @@
       </div>
 
         <div class="col-md-6 text-center" id="desc">
-          <p class="d-none d-md-block " style="display: flex;
+          <p class=" align-middle d-none d-md-block h4" style="margin-top:15%; display: flex;
           align-items: center;
-          justify-content: center;
-                                    "id="descriptionPlant" >
+          justify-content: center;" id="descriptionPlant">
             Descripción de la planta
           </p>
         </div>
         <div class="col-md-6 text-center" id="riego">
-          <p id="ultimoRiego">
+          <p class= "h4" id="ultimoRiego">
             Último riego: 00-00-0000<br>
          </p>
-         <p id="proximoRiego">
+         <p  class= "h4" id="proximoRiego">
             Próximo riego: 00-00-0000<br>
           </p>
         </div>
 
-
-        <div class="col-md-6">
-            <form method="POST" action="<?php echo e(url('/plant/delete')); ?>">
-                <?php echo method_field("POST"); ?>
-                <?php echo csrf_field(); ?>
-                     <input type="hidden" name="gardenId" id="gardenId">
-                     <input type="hidden" name="plantId" id="plantId">
-
-                <button class="btn btn-success container-fluid" type="submit" onclick="pictureDelete()">
-                    Borrar
-                  </button>
-            </form>
-
-        </div>
-        <div class="col-md-6">
+<div class="container">
+        <div class="row">
+        <div class="col-12 col-md-6">
             <form method="POST" action="<?php echo e(url('/plant/water')); ?>">
                 <?php echo method_field("POST"); ?>
                 <?php echo csrf_field(); ?>
                 <input type="hidden" name="gardenId" id="gardenId3">
                 <input type="hidden" name="plantId" id="plantId3">
 
-          <button class="btn btn-warning container-fluid" type="submit" onclick="regar()">
+          <button class="btn-lg btn-success container-fluid" type="submit" onclick="regar()">
             Regar
           </button>
         </form>
 
         </div>
-        <div class="col-md-6">
-         <button class="btn btn-warning container-fluid" type="button" onclick="openLightboxRenombre()">
-           Renombrar
-         </button>
-       </div>
+        <div class="col-12 col-md-6">
+            <form method="POST" action="<?php echo e(url('/plant/delete')); ?>">
+                <?php echo method_field("POST"); ?>
+                <?php echo csrf_field(); ?>
+                     <input type="hidden" name="gardenId" id="gardenId">
+                     <input type="hidden" name="plantId" id="plantId">
 
+                <button class="btn-lg btn-danger container-fluid" type="submit" onclick="pictureDelete()">
+                    Borrar
+                  </button>
+            </form>
+
+        </div>
+        </div>
+</div>
     </div>
 
 
@@ -275,8 +274,12 @@
 <div id="lightbox" style="display:none">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-6">
-          <select id="selector" value="0" class="container-fluid">
+        <div class="col-12 col-md-6">
+        <div class="container">
+            <div class="row">
+
+        <div class="col-md-12">
+          <select id="selector" class="container-fluid h4">
             <option value="0" >Selecciona una planta</option>
             <option value="1" onclick="pictureChange()">Tomate</option>
             <option value="2" onclick="pictureChange()">Patata</option>
@@ -284,20 +287,22 @@
         </select>
 
         </div>
-        <div class="col-md-4">
-          <div>
-            <img id="prod-image" src="assets/Brote.jpg" class="d-flex flex-column container-fluid"/>
-        </div>
+
       </div>
-
-        <div class="col-md-6 text-center" id="desc">
-          <p>
+      <div>
+    </div>
+        <div id="description2" class="col-12 align-center d-none d-sm-block col-md-12 text-center h4 " id="desc">
             Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.
-          </p>
         </div>
+        </div>
+        </div>
+        <div class="col-12 col-md-6">
 
+                <img id="prod-image" src="assets/Brote.jpg" class="d-flex flex-column container-fluid"/>
 
-
+        </div>
+        <div class="container">
+            <div class="row">
         <div class="col-md-6">
             <form method="POST" action="<?php echo e(url('/plant/create')); ?>">
                 <?php echo method_field("POST"); ?>
@@ -305,19 +310,18 @@
                      <input type="hidden" name="gardenId" id="gardenId2">
                      <input type="hidden" name="plantType" id="plantType">
 
-                     <button class="btn btn-success container-fluid" type="submit" onclick="pictureChange()">
+                     <button class="btn-lg btn-success container-fluid" type="submit" onclick="pictureChange()">
                         Añadir
                       </button>
             </form>
-
-
         </div>
         <div class="col-md-6">
-          <button class="btn btn-warning container-fluid" type="button" onclick="closeLightbox()">
+          <button class="btn-lg btn-warning container-fluid" type="button" onclick="closeLightbox()">
             Cerrar
           </button>
         </div>
-
+            </div>
+        </div>
     </div>
 
 
@@ -349,7 +353,7 @@
         <div class="container-fluid">
           <div class="row">
 
-            <div class="col-md-12 text-center" id="desc">
+            <div class="col-md-12 text-center h4" id="desc">
               <p>
                 ¿Qué huerto quieres borrar?
 
@@ -462,7 +466,9 @@ function deleteGardenId2(gardenId) {
       // Hide the lightbox and remove the dark background
       document.getElementById("lightbox").style.display = "none";
       document.getElementById("prod-image").src="<?php echo e(asset('assets/Brote.jpg')); ?>";
-
+      document.getElementById("description2").innerHTML="Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.";
+      var dropDown = document.getElementById("selector");
+      dropDown.selectedIndex = 0;
     }
   </script>
 
@@ -483,13 +489,20 @@ function deleteGardenId2(gardenId) {
       var datos = <?php echo json_encode($gardens, 15, 512) ?>;
         if (plant_id2 >8){
 
-        document.getElementById("proximoRiego").innerHTML ="Próximo riego: " + datos[garden_id].plants[plant_id2%9].next_water_date;
-        document.getElementById("ultimoRiego").innerHTML ="Último riego: " +  datos[garden_id].plants[plant_id2%9].water_date;
-
+        var a = document.getElementById("proximoRiego").innerHTML ="Próximo riego: " + datos[garden_id].plants[plant_id2%9].next_water_date;
+        var b = document.getElementById("ultimoRiego").innerHTML ="Último riego: " +  datos[garden_id].plants[plant_id2%9].water_date;
+            if (a == null || b == null){
+                var a = document.getElementById("proximoRiego").innerHTML ="No se ha regado";
+                var b = document.getElementById("ultimoRiego").innerHTML ="";
+            }
         }else{
 
-      document.getElementById("proximoRiego").innerHTML ="Próximo riego: " +  datos[garden_id].plants[plant_id2].next_water_date;
-      document.getElementById("ultimoRiego").innerHTML = "Último riego: " + datos[garden_id].plants[plant_id2].water_date;
+            var a = document.getElementById("proximoRiego").innerHTML ="Próximo riego: " +  datos[garden_id].plants[plant_id2].next_water_date;
+            var b = document.getElementById("ultimoRiego").innerHTML = "Último riego: " + datos[garden_id].plants[plant_id2].water_date;
+             if (a == null || b == null){
+                var a = document.getElementById("proximoRiego").innerHTML ="No se ha regado";
+                var b = document.getElementById("ultimoRiego").innerHTML ="";
+            }
         }
       plant_id2 = 0;
       garden_id = 0;
@@ -498,6 +511,7 @@ function deleteGardenId2(gardenId) {
     function closeLightboxPlanta() {
       // Hide the lightbox and remove the dark background
       document.getElementById("lightboxPlanta").style.display = "none";
+      document.getElementById("description2").innerHTML="Selecciona una planta en el menú superior para ver su información y añadirla a tu huerto.";
 
     }
   </script>
@@ -565,14 +579,15 @@ function deleteGardenId2(gardenId) {
 
     if (selectedValue === "1") {
         document.getElementById('prod-image').src="<?php echo e(asset('assets/Tomate.jpg')); ?>"
+        updateLightboxDescriptionTomate();
         document.getElementById('plantType').value = 1;
     } else if (selectedValue === "2") {
       document.getElementById('prod-image').src="<?php echo e(asset('assets/Patata.jpg')); ?>"
-
+      updateLightboxDescriptionPatata();
         document.getElementById('plantType').value = 2;
     } else if (selectedValue === "3") {
       document.getElementById('prod-image').src="<?php echo e(asset('assets/Cebolla.jpg')); ?>"
-
+      updateLightboxDescriptionCebolla();
         document.getElementById('plantType').value = 3;
     }
   }
@@ -675,15 +690,21 @@ function cambiarHuerto(id) {
 
   }
     function updateLightboxDescriptionTomate() {
-        document.getElementById('descriptionPlant').innerHTML = "El tomate es una fruta comestible de la familia de las solanáceas, de la que existen cientos de variedades de diferentes tamaños, formas y colores. Se consumen principalmente en la cocina como ingrediente en diversos platos, y también se pueden comer frescos como fruta."
+      document.getElementById('description2').innerHTML = "El tomate es una fruta comestible de la familia de las solanáceas, de la que existen cientos de variedades de diferentes tamaños, formas y colores. Se consumen principalmente en la cocina como ingrediente en diversos platos, y también se pueden comer frescos como fruta."
+
+      document.getElementById('descriptionPlant').innerHTML = "El tomate es una fruta comestible de la familia de las solanáceas, de la que existen cientos de variedades de diferentes tamaños, formas y colores. Se consumen principalmente en la cocina como ingrediente en diversos platos, y también se pueden comer frescos como fruta."
         document.getElementById('namePlant').innerHTML = "Tomate";
     }
     function updateLightboxDescriptionPatata() {
         document.getElementById('descriptionPlant').innerHTML = "La patata es un tubérculo comestible perteneciente a la familia de las solanáceas. Hay muchas variedades de patatas, que se diferencian en tamaño, forma, color y sabor. Las patatas se consumen cocidas, fritas o al horno y son una fuente importante de energía y nutrientes, como el hierro, el potasio y el calcio."
         document.getElementById('namePlant').innerHTML = "Patata";
+        document.getElementById('description2').innerHTML = "La patata es un tubérculo comestible perteneciente a la familia de las solanáceas. Hay muchas variedades de patatas, que se diferencian en tamaño, forma, color y sabor. Las patatas se consumen cocidas, fritas o al horno y son una fuente importante de energía y nutrientes, como el hierro, el potasio y el calcio."
+
     }
     function updateLightboxDescriptionCebolla() {
         document.getElementById('descriptionPlant').innerHTML = "La cebolla es una hortaliza bulbosa de la familia de las liliáceas, que se cultiva principalmente por su bulbo que es comestible. La cebolla se utiliza a menudo en la cocina como ingrediente base en diversos platos y salsas. También se puede comer cruda o cocida y es rica en vitamina C y otros nutrientes."
+        document.getElementById('description2').innerHTML = "La cebolla es una hortaliza bulbosa de la familia de las liliáceas, que se cultiva principalmente por su bulbo que es comestible. La cebolla se utiliza a menudo en la cocina como ingrediente base en diversos platos y salsas. También se puede comer cruda o cocida y es rica en vitamina C y otros nutrientes."
+
         document.getElementById('namePlant').innerHTML = "Cebolla";
 
     }

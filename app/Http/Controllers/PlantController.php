@@ -34,21 +34,22 @@ class PlantController extends Controller
      */
     public function create(Request $request)
     {
-
-
         $gardenId = $request->gardenId;
         $gardens = Auth::user()->gardens;
+
         if ($request->plantType == 0){
             $user = Auth::user();
             $user = UserResource::make($user);
             $data = json_decode($user->toJson(), true);
             return redirect()->back()->with($data);
         }
+
         $data = array(
             "category_id" =>  $request->plantType,
             "name" => null,
             "garden_id" => $gardens[$gardenId]->id,
         );
+
         Plant::create($data);
         $user = Auth::user();
         $user = UserResource::make($user);
